@@ -7,6 +7,7 @@
 // See: https://travisdowns.github.io/blog/2019/11/19/toupper.html
 #include <ctype.h>
 
+#include <iterator>
 #include <type_traits>
 #include <algorithm>
 
@@ -42,48 +43,64 @@ static inline char32_t toupper(char32_t c) {
 }
 
 template <typename IT, typename IT2>
-inline void tolower(IT begin, IT end, IT2 dst) {
-    for (; begin != end; ++begin, ++dst)
+inline size_t tolower(IT begin, IT end, IT2 dst) {
+    size_t res = 0;
+    while (begin != end)
     {
-        *dst = tolower(*dst);
+        *dst++ = tolower(*begin++);
+        ++res;
     }
+    return res;
 }
 
 template <typename IT, typename IT2>
-inline void toupper(IT begin, IT end, IT2 dst) {
-    for (; begin != end; ++begin, ++dst)
+inline size_t toupper(IT begin, IT end, IT2 dst) {
+    size_t res = 0;
+    while (begin != end)
     {
-        *dst = toupper(*dst);
+        *dst++ = toupper(*begin++);
+        ++res;
     }
+    return res;
 }
 
 template <typename IT>
-inline void tolower(IT begin, IT end) {
-    for (; begin != end; ++begin)
+inline size_t tolower(IT begin, IT end) {
+    size_t res = 0;
+    while (begin != end)
     {
         *begin = tolower(*begin);
+        ++begin;
+        ++res;
     }
+    return res;
 }
 
 template <typename IT>
-inline void toupper(IT begin, IT end) {
-    for (; begin != end; ++begin)
+inline size_t toupper(IT begin, IT end) {
+    size_t res = 0;
+    while (begin != end)
     {
         *begin = toupper(*begin);
+        ++begin;
+        ++res;
     }
+    return res;
 }
 
 template <typename T>
 inline T toupper(const T& in) {
-    T out{in};
-    toupper(in.begin(), in.end(), out.begin());
+    T out{};
+    out.reserve(in.size());
+    toupper(in.begin(), in.end(), std::back_inserter(out));
     return out;
 }
 
 template <typename T>
 inline T tolower(const T& in) {
-    T out{in};
-    tolower(in.begin(), in.end(), out.begin());
+    T out{};
+    out.reserve(in.size());
+    tolower(in.begin(), in.end(), std::back_inserter(out));
     return out;
 }
 } // namespace utf32
