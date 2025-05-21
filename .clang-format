@@ -1,0 +1,17 @@
+BasedOnStyle: LLVM
+IndentWidth: 4
+BreakBeforeBraces: Custom
+BraceWrapping:
+    AfterCaseLabel: true
+    AfterStruct: false
+    AfterControlStatement: Always
+    AfterUnion: true
+    BeforeElse: false
+    SplitEmptyFunction: false
+
+PointerAlignment: Left
+SortIncludes: false
+AlignAfterOpenBracket: true
+AlwaysBreakTemplateDeclarations : Yes
+# IndentAccessModifiers: false    #clang 13
+# SeparateDefinitionStyle: Always #clang 14
