@@ -8,6 +8,7 @@
 #include "utf32.h"
 
 #include <cstdint>
+#include <iterator>
 
 namespace utfcaseconv {
 
