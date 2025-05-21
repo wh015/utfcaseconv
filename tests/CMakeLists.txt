@@ -1,8 +1,13 @@
-
 find_package(Catch2 CONFIG REQUIRED)
 
 include(CTest)
 include(Catch)
+
+if(MSVC)
+    add_compile_options(/DCATCH2_VERSION=${Catch2_VERSION_MAJOR})
+else()
+    add_compile_options(-DCATCH2_VERSION=${Catch2_VERSION_MAJOR})
+endif()
 
 add_executable(toupper_utf32_test toupper_utf32_test.cpp)
 target_link_libraries(toupper_utf32_test PRIVATE utfcaseconv Catch2::Catch2WithMain)

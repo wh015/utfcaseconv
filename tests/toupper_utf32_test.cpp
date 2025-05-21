@@ -1,9 +1,9 @@
-#include <catch2/catch_test_macros.hpp>
-
 #include <string>
 #include <cstring>
 
 #include <utfcaseconv/utf32.h>
+
+#include "catch2_wrapper.h"
 
 using namespace utfcaseconv::utf32;
 

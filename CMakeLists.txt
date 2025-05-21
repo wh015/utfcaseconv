@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 3.7)
 
 project(utfcaseconv LANGUAGES CXX)
 
+if (NOT DEFINED Python3_EXECUTABLE)
+    set(Python3_EXECUTABLE "python3")
+endif()
+
 include_directories(BEFORE SYSTEM ${CMAKE_INCLUDE_PATH})
 
 option(WITH_TESTS "Build common tests." ON)
