@@ -48,8 +48,8 @@ inline size_t codepoint_32to8(char32_t cdpt, IT& dst) noexcept {
 template <typename IT>
 inline char32_t codepoint_8to32(IT& begin, IT end) noexcept {
     auto octet = static_cast<uint8_t>(*begin++);
-    auto state = stateTable[octet];
-    char32_t cdpt = octetTable[octet];
+    auto state = STATE_TABLE[octet];
+    char32_t cdpt = OCTET_TABLE[octet];
 
     while (state > ERR)
     {
@@ -59,11 +59,11 @@ inline char32_t codepoint_8to32(IT& begin, IT end) noexcept {
         }
 
         octet = static_cast<uint8_t>(*begin++);
-        const auto type = typeTable[octet];
+        const auto type = TYPE_TABLE[octet];
         cdpt = (cdpt << 6) | (octet & 0x3F);
 
         const auto lookup_index = static_cast<uint8_t>(state) + static_cast<uint8_t>(type);
-        state = stateLookupTable[lookup_index];
+        state = STATE_LOOKUP_TABLE[lookup_index];
     }
 
     return cdpt;

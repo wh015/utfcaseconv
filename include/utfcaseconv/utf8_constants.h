@@ -47,7 +47,7 @@ enum Border : char32_t {
 };
 
 // clang-format off
-static constexpr std::array<uint8_t, 256> octetTable = {{
+static constexpr std::array<uint8_t, 256> OCTET_TABLE = {{
     0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, // 00..0F
     0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F, // 10..1F
     0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F, // 20..2F
@@ -69,7 +69,7 @@ static constexpr std::array<uint8_t, 256> octetTable = {{
     0x00, 0x01, 0x02, 0x03, 0x04, 0xF5, 0xF6, 0xF7, 0xF8, 0xF9, 0xFA, 0xFB, 0xFC, 0xFD, 0xFE, 0xFF, // F0..FF
 }};
 
-static constexpr std::array<State, 256> stateTable = {{
+static constexpr std::array<State, 256> STATE_TABLE = {{
     BGN, BGN, BGN, BGN, BGN, BGN, BGN, BGN, BGN, BGN, BGN, BGN, BGN, BGN, BGN, BGN, // 00..0F
     BGN, BGN, BGN, BGN, BGN, BGN, BGN, BGN, BGN, BGN, BGN, BGN, BGN, BGN, BGN, BGN, // 10..1F
     BGN, BGN, BGN, BGN, BGN, BGN, BGN, BGN, BGN, BGN, BGN, BGN, BGN, BGN, BGN, BGN, // 20..2F
@@ -91,7 +91,7 @@ static constexpr std::array<State, 256> stateTable = {{
     P4A, CS3, CS3, CS3, P4B, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, ERR, // F0..FF
 }};
 
-static constexpr std::array<Type, 256> typeTable = {{
+static constexpr std::array<Type, 256> TYPE_TABLE = {{
     ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, // 00..0F
     ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, // 10..1F
     ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, ASC, // 20..2F
@@ -113,7 +113,7 @@ static constexpr std::array<Type, 256> typeTable = {{
     L4A, L4B, L4B, L4B, L4C, ILL, ILL, ILL, ILL, ILL, ILL, ILL, ILL, ILL, ILL, ILL, // F0..FF
 }};
 
-static constexpr std::array<State, 108> stateLookupTable = {{
+static constexpr std::array<State, 108> STATE_LOOKUP_TABLE = {{
     /*
     ILL  ASC  CR1  CR2  CR3  L2A  L3A  L3B  L3C  L4A  L4B  L4C
     */
