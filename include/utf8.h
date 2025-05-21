@@ -18,28 +18,28 @@
 namespace utfcaseconv {
 
 template <typename IT>
-size_t codepoint_32to8(char32_t cdpt, IT& dst) noexcept {
-    if (cdpt <= 0x7F)
+inline size_t codepoint_32to8(char32_t cdpt, IT& dst) noexcept {
+    if (cdpt < BORDER_ASCII)
     {
-        *dst++ = (char)(cdpt);
+        *dst++ = static_cast<char>(cdpt);
         return 1;
-    } else if (cdpt <= 0x7FF)
+    } else if (cdpt < BORDER_2BYTE)
     {
-        *dst++ = (char)(0xC0 | ((cdpt >> 6) & 0x1F));
-        *dst++ = (char)(0x80 | (cdpt & 0x3F));
+        *dst++ = static_cast<char>(0xC0 | ((cdpt >> 6) & 0x1F));
+        *dst++ = static_cast<char>(0x80 | (cdpt & 0x3F));
         return 2;
-    } else if (cdpt <= 0xFFFF)
+    } else if (cdpt < BORDER_3BYTE)
     {
-        *dst++ = (char)(0xE0 | ((cdpt >> 12) & 0x0F));
-        *dst++ = (char)(0x80 | ((cdpt >> 6) & 0x3F));
-        *dst++ = (char)(0x80 | (cdpt & 0x3F));
+        *dst++ = static_cast<char>(0xE0 | ((cdpt >> 12) & 0x0F));
+        *dst++ = static_cast<char>(0x80 | ((cdpt >> 6) & 0x3F));
+        *dst++ = static_cast<char>(0x80 | (cdpt & 0x3F));
         return 3;
-    } else if (cdpt <= 0x10FFFF)
+    } else if (cdpt < BORDER_4BYTE)
     {
-        *dst++ = (char)(0xF0 | ((cdpt >> 18) & 0x07));
-        *dst++ = (char)(0x80 | ((cdpt >> 12) & 0x3F));
-        *dst++ = (char)(0x80 | ((cdpt >> 6) & 0x3F));
-        *dst++ = (char)(0x80 | (cdpt & 0x3F));
+        *dst++ = static_cast<char>(0xF0 | ((cdpt >> 18) & 0x07));
+        *dst++ = static_cast<char>(0x80 | ((cdpt >> 12) & 0x3F));
+        *dst++ = static_cast<char>(0x80 | ((cdpt >> 6) & 0x3F));
+        *dst++ = static_cast<char>(0x80 | (cdpt & 0x3F));
         return 4;
     }
     return 0;
@@ -68,12 +68,12 @@ inline char32_t codepoint_8to32(IT& begin, IT end) noexcept {
 }
 
 template <typename IT, typename IT2>
-inline size_t toupper(IT begin, IT end, IT2 dst) noexcept {
+size_t toupper(IT begin, IT end, IT2 dst) noexcept {
     auto res = 0;
     while (begin != end)
     {
         auto octet = static_cast<uint8_t>(*begin);
-        if (octet < ASCII_BORDER)
+        if (octet < BORDER_ASCII)
         {
             *dst++ = ::toupper(octet);
             ++res;
@@ -92,12 +92,12 @@ inline size_t toupper(IT begin, IT end, IT2 dst) noexcept {
 }
 
 template <typename IT, typename IT2>
-inline size_t tolower(IT begin, IT end, IT2 dst) noexcept {
+size_t tolower(IT begin, IT end, IT2 dst) noexcept {
     auto res = 0;
     while (begin != end)
     {
         auto octet = static_cast<uint8_t>(*begin);
-        if (octet < ASCII_BORDER)
+        if (octet < BORDER_ASCII)
         {
             *dst++ = ::tolower(octet);
             ++res;

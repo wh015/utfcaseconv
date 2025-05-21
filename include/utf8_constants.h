@@ -38,7 +38,13 @@ enum Type : uint8_t {
 };
 
 static constexpr char32_t CODEPOINT32_INVALID = 0xFFFFFFFF;
-static constexpr char ASCII_BORDER = 0x80;
+
+enum Border : char32_t {
+    BORDER_ASCII = 0x80,
+    BORDER_2BYTE = 0x800,
+    BORDER_3BYTE = 0x10000,
+    BORDER_4BYTE = 0x110000,
+};
 
 // clang-format off
 static constexpr std::array<uint8_t, 256> octetTable = {{
