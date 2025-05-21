@@ -33,7 +33,7 @@ add_custom_command(OUTPUT ${TARGET_HEADERS}
 
 add_custom_target(generate_tables ALL DEPENDS ${TARGET_HEADERS})
 
-add_library(utfcaseconv INTERFACE)
+add_library(utfcaseconv INTERFACE ${TARGET_HEADERS})
 target_include_directories(utfcaseconv INTERFACE "${CMAKE_BINARY_DIR}/include")
 
 include(GNUInstallDirs)
