@@ -121,30 +121,42 @@ size_t tolower(IT begin, IT end, IT2 dst) noexcept {
 template <typename T>
 inline T toupper(const T& in) {
     T out;
-    out.reserve(in.size());
-    toupper(in.begin(), in.end(), std::back_inserter(out));
+
+    out.resize(in.size());
+    auto sz = toupper(in.begin(), in.end(), out.begin());
+    out.resize(sz);
+
     return out;
 }
 
 template <typename T>
 inline T tolower(const T& in) {
     T out;
-    out.reserve(in.size());
-    tolower(in.begin(), in.end(), std::back_inserter(out));
+
+    out.resize(in.size());
+    auto sz = tolower(in.begin(), in.end(), out.begin());
+    out.resize(sz);
+
     return out;
 }
 
 inline std::string toupper(const std::string_view in) {
     std::string out;
-    out.reserve(in.size());
-    toupper(in.begin(), in.end(), std::back_inserter(out));
+
+    out.resize(in.size());
+    auto sz = toupper(in.begin(), in.end(), out.begin());
+    out.resize(sz);
+
     return out;
 }
 
 inline std::string tolower(const std::string_view in) {
     std::string out;
-    out.reserve(in.size());
-    tolower(in.begin(), in.end(), std::back_inserter(out));
+
+    out.resize(in.size());
+    auto sz = tolower(in.begin(), in.end(), out.begin());
+    out.resize(sz);
+
     return out;
 }
 
