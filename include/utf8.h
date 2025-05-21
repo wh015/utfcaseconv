@@ -72,12 +72,21 @@ inline size_t toupper(IT begin, IT end, IT2 dst) {
     auto res = 0;
     while (begin != end)
     {
-        auto cdpt = codepoint_8to32(begin, end);
-        if (cdpt == CodePoint32Invalid)
+        auto octet = static_cast<uint8_t>(*begin);
+        if (octet < 0x80)
         {
-            break;
+            *dst++ = ::toupper(octet);
+            ++res;
+            ++begin;
+        } else
+        {
+            auto cdpt = codepoint_8to32(begin, end);
+            if (cdpt == CodePoint32Invalid)
+            {
+                break;
+            }
+            res += codepoint_32to8(utf32::toupper(cdpt), dst);
         }
-        res += codepoint_32to8(utf32::toupper(cdpt), dst);
     }
     return res;
 }
@@ -87,12 +96,21 @@ inline size_t tolower(IT begin, IT end, IT2 dst) {
     auto res = 0;
     while (begin != end)
     {
-        auto cdpt = codepoint_8to32(begin, end);
-        if (cdpt == CodePoint32Invalid)
+        auto octet = static_cast<uint8_t>(*begin);
+        if (octet < 0x80)
         {
-            break;
+            *dst++ = ::tolower(octet);
+            ++res;
+            ++begin;
+        } else
+        {
+            auto cdpt = codepoint_8to32(begin, end);
+            if (cdpt == CodePoint32Invalid)
+            {
+                break;
+            }
+            res += codepoint_32to8(utf32::tolower(cdpt), dst);
         }
-        res += codepoint_32to8(utf32::tolower(cdpt), dst);
     }
     return res;
 }
