@@ -125,6 +125,6 @@ static constexpr std::array<State, 108> stateLookupTable = {{
 }};
 // clang-format on
 
-}
+} // namespace utfcaseconv
 
 #endif

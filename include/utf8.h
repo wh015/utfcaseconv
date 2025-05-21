@@ -15,7 +15,6 @@
 // https://github.com/BobSteagall/utf_utils.git
 // Suitable of x86-64 or any other LE architecture.
 
-
 namespace utfcaseconv {
 
 template <typename IT>

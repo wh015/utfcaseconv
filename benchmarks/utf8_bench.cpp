@@ -1,9 +1,9 @@
 #include <string>
 #include <cstring>
 
-#include <utfcaseconv/utf8.h>
+#include <benchmark/benchmark.h>
 
-#include "catch2_wrapper.h"
+#include <utfcaseconv/utf8.h>
 
 static constexpr char ascii[] =
     "Call me Ishmael. Some years ago - never mind how long precisely - having "
@@ -168,38 +168,70 @@ static constexpr char mixed[] =
 
 using namespace utfcaseconv;
 
-TEST_CASE("UTF-8 ASCII") {
+static void BM_utf8_ascii_lower(benchmark::State& state) {
     const char* src = ascii;
     size_t size = sizeof(ascii);
     char* dst = new char[size];
-
-    BENCHMARK("ASCII to upper") { return toupper(src, src + size, dst); };
-
-    BENCHMARK("ASCII to lower") { return toupper(src, src + size, dst); };
-
-    delete dst;
+    for (auto _ : state)
+    {
+        tolower(src, src + size, dst);
+    }
 }
+BENCHMARK(BM_utf8_ascii_lower);
 
-TEST_CASE("UTF-8 Cyrllic") {
+static void BM_utf8_ascii_upper(benchmark::State& state) {
+    const char* src = ascii;
+    size_t size = sizeof(ascii);
+    char* dst = new char[size];
+    for (auto _ : state)
+    {
+        toupper(src, src + size, dst);
+    }
+}
+BENCHMARK(BM_utf8_ascii_upper);
+
+static void BM_utf8_cyrillic_lower(benchmark::State& state) {
     const char* src = cyrillic;
     size_t size = sizeof(cyrillic);
     char* dst = new char[size];
-
-    BENCHMARK("Cyrllic to upper") { return toupper(src, src + size, dst); };
-
-    BENCHMARK("Cyrllic to lower") { return tolower(src, src + size, dst); };
-
-    delete dst;
+    for (auto _ : state)
+    {
+        tolower(src, src + size, dst);
+    }
 }
+BENCHMARK(BM_utf8_cyrillic_lower);
 
-TEST_CASE("UTF-8 Mixed") {
+static void BM_utf8_cyrillic_upper(benchmark::State& state) {
+    const char* src = cyrillic;
+    size_t size = sizeof(cyrillic);
+    char* dst = new char[size];
+    for (auto _ : state)
+    {
+        toupper(src, src + size, dst);
+    }
+}
+BENCHMARK(BM_utf8_cyrillic_upper);
+
+static void BM_utf8_mixed_lower(benchmark::State& state) {
     const char* src = mixed;
     size_t size = sizeof(mixed);
     char* dst = new char[size];
-
-    BENCHMARK("Mixed to upper") { return toupper(src, src + size, dst); };
-
-    BENCHMARK("Mixed to lower") { return tolower(src, src + size, dst); };
-
-    delete dst;
+    for (auto _ : state)
+    {
+        tolower(src, src + size, dst);
+    }
 }
+BENCHMARK(BM_utf8_mixed_lower);
+
+static void BM_utf8_mixed_upper(benchmark::State& state) {
+    const char* src = mixed;
+    size_t size = sizeof(mixed);
+    char* dst = new char[size];
+    for (auto _ : state)
+    {
+        toupper(src, src + size, dst);
+    }
+}
+BENCHMARK(BM_utf8_mixed_upper);
+
+BENCHMARK_MAIN();

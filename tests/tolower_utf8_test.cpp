@@ -3,93 +3,93 @@
 
 #include <utfcaseconv/utf8.h>
 
-#include "catch2_wrapper.h"
+#include <gtest/gtest.h>
 
 using namespace utfcaseconv;
 
-TEST_CASE("Latin") {
-    std::string s = "PoSiTivE";
-    REQUIRE(tolower(s) == "positive");
+TEST(utf8_tolower_string, Latin) {
+    std::string s = "AnY StRiNg";
+    ASSERT_EQ(tolower(s), "any string");
 }
 
-TEST_CASE("Cyrillic") {
+TEST(utf8_tolower_string, cyrillic) {
     std::string s = "НеКаЯ СтРоКа";
-    REQUIRE(tolower(s) == "некая строка");
+    ASSERT_EQ(tolower(s), "некая строка");
 }
 
-TEST_CASE("Greek") {
+TEST(utf8_tolower_string, greek) {
     std::string s = "ΑΩμ";
-    REQUIRE(tolower(s) == "αωμ");
+    ASSERT_EQ(tolower(s), "αωμ");
 }
 
-TEST_CASE("Coptic") {
+TEST(utf8_tolower_string, coptic) {
     std::string s = "ⲀⳀⲗ";
-    REQUIRE(tolower(s) == "ⲁⳁⲗ");
+    ASSERT_EQ(tolower(s), "ⲁⳁⲗ");
 }
 
-TEST_CASE("Armenian") {
+TEST(utf8_tolower_string, armenian) {
     std::string s = "ԱԲճ";
-    REQUIRE(tolower(s) == "աբճ");
+    ASSERT_EQ(tolower(s), "աբճ");
 }
 
-TEST_CASE("Glagolitic") {
+TEST(utf8_tolower_string, glagolitic) {
     std::string s = "ⰀⰪⱈ";
-    REQUIRE(tolower(s) == "ⰰⱚⱈ");
+    ASSERT_EQ(tolower(s), "ⰰⱚⱈ");
 }
 
-TEST_CASE("Adlam") {
+TEST(utf8_tolower_string, adlam) {
     std::string s = "𞤀𞤛𞤯𞤊";
-    REQUIRE(tolower(s) == "𞤢𞤽𞤯𞤬");
+    ASSERT_EQ(tolower(s), "𞤢𞤽𞤯𞤬");
 }
 
-TEST_CASE("Warang Citi") {
+TEST(utf8_tolower_string, warang_citi) {
     std::string s = "𑢠𑢿𑣏";
-    REQUIRE(tolower(s) == "𑣀𑣟𑣏");
+    ASSERT_EQ(tolower(s), "𑣀𑣟𑣏");
 }
 
-TEST_CASE("Garay") {
+TEST(utf8_tolower_string, garay) {
     std::string s = "𐵚𐵥𐶎";
-    REQUIRE(tolower(s) == "𐵺𐶅𐶎");
+    ASSERT_EQ(tolower(s), "𐵺𐶅𐶎");
 }
 
-TEST_CASE("Zaghawa") {
+TEST(utf8_tolower_string, zaghawa) {
     // only proposed to be added to Unicode
 }
 
-TEST_CASE("Osage") {
+TEST(utf8_tolower_string, osage) {
     std::string s = "𐒰𐓃𐓪";
-    REQUIRE(tolower(s) == "𐓘𐓫𐓪");
+    ASSERT_EQ(tolower(s), "𐓘𐓫𐓪");
 }
 
-TEST_CASE("Vithkuqi") {
+TEST(utf8_tolower_string, vithkuqi) {
     std::string s = "𐕰𐖕𐖙";
-    REQUIRE(tolower(s) == "𐖗𐖼𐖙");
+    ASSERT_EQ(tolower(s), "𐖗𐖼𐖙");
 }
 
-TEST_CASE("Deseret") {
+TEST(utf8_tolower_string, deseret) {
     std::string s = "𐐀𐐧𐑅";
-    REQUIRE(tolower(s) == "𐐨𐑏𐑅");
+    ASSERT_EQ(tolower(s), "𐐨𐑏𐑅");
 }
 
-TEST_CASE("Georgian") {
+TEST(utf8_tolower_string, georgian) {
     std::string s = "ႠჅⴙᲐᲰრ";
-    REQUIRE(tolower(s) == "ⴀⴥⴙაჰრ");
+    ASSERT_EQ(tolower(s), "ⴀⴥⴙაჰრ");
 }
 
-TEST_CASE("Non-bicameral") {
+TEST(utf8_tolower_string, non_bicameral) {
     std::string s = "غ𐠔❤デ東大ᚦఅஊஊ";
-    REQUIRE(tolower(s) == "غ𐠔❤デ東大ᚦఅஊஊ");
+    ASSERT_EQ(tolower(s), "غ𐠔❤デ東大ᚦఅஊஊ");
 }
 
-TEST_CASE("String view") {
+TEST(utf8_tolower_string, string_view) {
     std::string_view s = "НеКаЯ СтРоКа";
-    REQUIRE(tolower(s) == "некая строка");
+    ASSERT_EQ(tolower(s), "некая строка");
 }
 
-TEST_CASE("Array") {
+TEST(utf8_tolower_string, array) {
     char src[] = "НеКаЯ СтРоКа";
     char expected[] = "некая строка";
 
     tolower(src, src + (sizeof(src) / sizeof(*src)), src);
-    REQUIRE(memcmp(src, expected, sizeof(src)) == 0);
+    ASSERT_EQ(memcmp(src, expected, sizeof(src)), 0);
 }

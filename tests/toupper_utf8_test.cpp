@@ -3,93 +3,93 @@
 
 #include <utfcaseconv/utf8.h>
 
-#include "catch2_wrapper.h"
+#include <gtest/gtest.h>
 
 using namespace utfcaseconv;
 
-TEST_CASE("Latin") {
-    std::string s = "PoSiTiVe";
-    REQUIRE(toupper(s) == "POSITIVE");
+TEST(utf8_toupper_string, latin) {
+    std::string s = "AnY StRiNg";
+    ASSERT_EQ(toupper(s), "ANY STRING");
 }
 
-TEST_CASE("Cyrillic") {
+TEST(utf8_toupper_string, cyrillic) {
     std::string s = "НеКаЯ СтРоКа";
-    REQUIRE(toupper(s) == "НЕКАЯ СТРОКА");
+    ASSERT_EQ(toupper(s), "НЕКАЯ СТРОКА");
 }
 
-TEST_CASE("Greek") {
+TEST(utf8_toupper_string, greek) {
     std::string s = "αωΨ";
-    REQUIRE(toupper(s) == "ΑΩΨ");
+    ASSERT_EQ(toupper(s), "ΑΩΨ");
 }
 
-TEST_CASE("Coptic") {
+TEST(utf8_toupper_string, coptic) {
     std::string s = "ⲁⳁⲪ";
-    REQUIRE(toupper(s) == "ⲀⳀⲪ");
+    ASSERT_EQ(toupper(s), "ⲀⳀⲪ");
 }
 
-TEST_CASE("Armenian") {
+TEST(utf8_toupper_string, armenian) {
     std::string s = "աբՁ";
-    REQUIRE(toupper(s) == "ԱԲՁ");
+    ASSERT_EQ(toupper(s), "ԱԲՁ");
 }
 
-TEST_CASE("Glagolitic") {
+TEST(utf8_toupper_string, glagolitic) {
     std::string s = "ⰰⱚⰣ";
-    REQUIRE(toupper(s) == "ⰀⰪⰣ");
+    ASSERT_EQ(toupper(s), "ⰀⰪⰣ");
 }
 
-TEST_CASE("Adlam") {
+TEST(utf8_toupper_string, adlam) {
     std::string s = "𞤢𞤽𞤐𞤬";
-    REQUIRE(toupper(s) == "𞤀𞤛𞤐𞤊");
+    ASSERT_EQ(toupper(s), "𞤀𞤛𞤐𞤊");
 }
 
-TEST_CASE("Warang Citi") {
+TEST(utf8_toupper_string, warang_citi) {
     std::string s = "𑣀𑣟𑢫";
-    REQUIRE(toupper(s) == "𑢠𑢿𑢫");
+    ASSERT_EQ(toupper(s), "𑢠𑢿𑢫");
 }
 
-TEST_CASE("Garay") {
+TEST(utf8_toupper_string, garay) {
     std::string s = "𐵺𐵕𐶅";
-    REQUIRE(toupper(s) == "𐵚𐵕𐵥");
+    ASSERT_EQ(toupper(s), "𐵚𐵕𐵥");
 }
 
-TEST_CASE("Zaghawa") {
+TEST(utf8_toupper_string, zaghawa) {
     // only proposed to be added to Unicode
 }
 
-TEST_CASE("Osage") {
+TEST(utf8_toupper_string, osage) {
     std::string s = "𐓘𐓫𐓋";
-    REQUIRE(toupper(s) == "𐒰𐓃𐓋");
+    ASSERT_EQ(toupper(s), "𐒰𐓃𐓋");
 }
 
-TEST_CASE("Vithkuqi") {
+TEST(utf8_toupper_string, vithkuqi) {
     std::string s = "𐖗𐖼𐖄";
-    REQUIRE(toupper(s) == "𐕰𐖕𐖄");
+    ASSERT_EQ(toupper(s), "𐕰𐖕𐖄");
 }
 
-TEST_CASE("Deseret") {
+TEST(utf8_toupper_string, deseret) {
     std::string s = "𐐨𐑏𐐘";
-    REQUIRE(toupper(s) == "𐐀𐐧𐐘");
+    ASSERT_EQ(toupper(s), "𐐀𐐧𐐘");
 }
 
-TEST_CASE("Georgian") {
+TEST(utf8_toupper_string, georgian) {
     std::string s = "ⴀⴥႱაჰᲓ";
-    REQUIRE(toupper(s) == "ႠჅႱᲐᲰᲓ");
+    ASSERT_EQ(toupper(s), "ႠჅႱᲐᲰᲓ");
 }
 
-TEST_CASE("Non-bicameral") {
+TEST(utf8_toupper_string, non_bicameral) {
     std::string s = "غ𐠔❤デ東大ᚦఅஊஊ";
-    REQUIRE(toupper(s) == "غ𐠔❤デ東大ᚦఅஊஊ");
+    ASSERT_EQ(toupper(s), "غ𐠔❤デ東大ᚦఅஊஊ");
 }
 
-TEST_CASE("String view") {
+TEST(utf8_toupper_string, string_view) {
     std::string_view s = "НеКаЯ СтРоКа";
-    REQUIRE(toupper(s) == "НЕКАЯ СТРОКА");
+    ASSERT_EQ(toupper(s), "НЕКАЯ СТРОКА");
 }
 
-TEST_CASE("Array") {
+TEST(utf8_toupper_string, array) {
     char src[] = "НеКаЯ СтРоКа";
     char expected[] = "НЕКАЯ СТРОКА";
 
     toupper(src, src + (sizeof(src) / sizeof(*src)), src);
-    REQUIRE(memcmp(src, expected, sizeof(src)) == 0);
+    ASSERT_EQ(memcmp(src, expected, sizeof(src)), 0);
 }
