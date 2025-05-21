@@ -19,13 +19,13 @@ static void BM_icu_utf8_lower(benchmark::State& state, Args&&... args) {
     std::string dst;
     dst.reserve(src.size() + 1);
 
-    for (auto _ : state)
-    {
+    for (auto _ : state) {
         UnicodeString tmp(src.data());
         tmp.toLower();
         tmp.toUTF8String(dst);
     }
 }
+
 BENCHMARK_CAPTURE(BM_icu_utf8_lower, ascii, ascii);
 BENCHMARK_CAPTURE(BM_icu_utf8_lower, cyrillic, cyrillic);
 BENCHMARK_CAPTURE(BM_icu_utf8_lower, mixed, mixed);
@@ -37,13 +37,13 @@ static void BM_icu_utf8_upper(benchmark::State& state, Args&&... args) {
     std::string dst;
     dst.reserve(src.size() + 1);
 
-    for (auto _ : state)
-    {
+    for (auto _ : state) {
         UnicodeString tmp(src.data());
         tmp.toUpper();
         tmp.toUTF8String(dst);
     }
 }
+
 BENCHMARK_CAPTURE(BM_icu_utf8_upper, ascii, ascii);
 BENCHMARK_CAPTURE(BM_icu_utf8_upper, cyrillic, cyrillic);
 BENCHMARK_CAPTURE(BM_icu_utf8_upper, mixed, mixed);

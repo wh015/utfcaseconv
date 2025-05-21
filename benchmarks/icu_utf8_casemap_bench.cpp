@@ -24,21 +24,17 @@ static std::string change_case(const ConvertionFunction& converter,
     assert(src.size() < std::numeric_limits<std::int32_t>::max());
     assert(dst.size() < std::numeric_limits<std::int32_t>::max());
 
-    auto size =
-        converter(csm, dst.data(), static_cast<std::int32_t>(dst.size()),
-                  src.data(), static_cast<std::int32_t>(src.size()), &err);
+    auto size = converter(csm, dst.data(), static_cast<std::int32_t>(dst.size()),
+                          src.data(), static_cast<std::int32_t>(src.size()), &err);
 
-    if (err == U_BUFFER_OVERFLOW_ERROR)
-    {
+    if (err == U_BUFFER_OVERFLOW_ERROR) {
         err = U_ZERO_ERROR;
         dst.resize(size);
-        size =
-            converter(csm, dst.data(), static_cast<std::int32_t>(dst.size()),
-                      src.data(), static_cast<std::int32_t>(src.size()), &err);
+        size = converter(csm, dst.data(), static_cast<std::int32_t>(dst.size()),
+                         src.data(), static_cast<std::int32_t>(src.size()), &err);
     }
 
-    if (U_FAILURE(err))
-    {
+    if (U_FAILURE(err)) {
         return std::string{};
     }
 
@@ -57,8 +53,7 @@ static void MB_casemap_open(const benchmark::State& state) {
     UErrorCode err = U_ZERO_ERROR;
 
     csm = ucasemap_open(nullptr, U_FOLD_CASE_DEFAULT, &err);
-    if (U_FAILURE(err))
-    {
+    if (U_FAILURE(err)) {
         throw std::runtime_error{"ucasemap_open failed, " +
                                  std::string{u_errorName(err)}};
     }
@@ -74,11 +69,11 @@ static void BM_icu_utf8_casemap_lower(benchmark::State& state, Args&&... args) {
     auto args_tuple = std::make_tuple(std::move(args)...);
     auto src = std::get<0>(args_tuple);
 
-    for (auto _ : state)
-    {
+    for (auto _ : state) {
         tolower(src);
     }
 }
+
 BENCHMARK_CAPTURE(BM_icu_utf8_casemap_lower, ascii, ascii)
     ->Setup(MB_casemap_open)
     ->Teardown(MB_casemap_close);
@@ -94,11 +89,11 @@ static void BM_icu_utf8_casemap_upper(benchmark::State& state, Args&&... args) {
     auto args_tuple = std::make_tuple(std::move(args)...);
     auto src = std::get<0>(args_tuple);
 
-    for (auto _ : state)
-    {
+    for (auto _ : state) {
         toupper(src);
     }
 }
+
 BENCHMARK_CAPTURE(BM_icu_utf8_casemap_upper, ascii, ascii)
     ->Setup(MB_casemap_open)
     ->Teardown(MB_casemap_close);

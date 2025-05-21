@@ -17,26 +17,25 @@ static void BM_utfcaseconv_utf8_lower(benchmark::State& state, Args&&... args) {
     auto args_tuple = std::make_tuple(std::move(args)...);
     auto src = std::get<0>(args_tuple);
 
-    for (auto _ : state)
-    {
+    for (auto _ : state) {
         tolower(src);
     }
 }
+
 BENCHMARK_CAPTURE(BM_utfcaseconv_utf8_lower, ascii, ascii);
 BENCHMARK_CAPTURE(BM_utfcaseconv_utf8_lower, cyrillic, cyrillic);
 BENCHMARK_CAPTURE(BM_utfcaseconv_utf8_lower, mixed, mixed);
 
 template <class... Args>
-static void BM_utfcaseconv_utf8_ascii_upper(benchmark::State& state,
-                                            Args&&... args) {
+static void BM_utfcaseconv_utf8_ascii_upper(benchmark::State& state, Args&&... args) {
     auto args_tuple = std::make_tuple(std::move(args)...);
     auto src = std::get<0>(args_tuple);
 
-    for (auto _ : state)
-    {
+    for (auto _ : state) {
         toupper(src);
     }
 }
+
 BENCHMARK_CAPTURE(BM_utfcaseconv_utf8_ascii_upper, ascii, ascii);
 BENCHMARK_CAPTURE(BM_utfcaseconv_utf8_ascii_upper, cyrillic, cyrillic);
 BENCHMARK_CAPTURE(BM_utfcaseconv_utf8_ascii_upper, mixed, mixed);

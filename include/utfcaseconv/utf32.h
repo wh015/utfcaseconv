@@ -20,16 +20,18 @@ namespace utf32 {
 // https://mhdm.dev/posts/sb_lower_bound/
 template <class ForwardIt, class T>
 constexpr ForwardIt sb_lower_bound(ForwardIt first, ForwardIt last, const T value) {
-   auto length = last - first;
-   while (length > 0) {
-      auto half = length / 2;
-      if (first[half] < value) {
-         // length - half equals half + length % 2
-         first += length - half;
-      }
-      length = half;
-   }
-   return first;
+    auto length = last - first;
+
+    while (length > 0) {
+        auto half = length / 2;
+        if (first[half] < value) {
+            // length - half equals half + length % 2
+            first += length - half;
+        }
+        length = half;
+    }
+
+    return first;
 }
 
 template <size_t sz>
@@ -39,14 +41,14 @@ char32_t convert(char32_t c, const std::array<char32_t, sz>& src,
 
     auto r = c;
     const auto it = sb_lower_bound(src.begin(), src.end(), c);
-    if (it != src.end())
-    {
-        if (*it == c)
-        {
+
+    if (it != src.end()) {
+        if (*it == c) {
             const auto offset = std::distance(src.begin(), it);
             r = *(dst.begin() + offset);
         }
     }
+
     return r;
 }
 
@@ -61,76 +63,68 @@ static inline char32_t toupper(char32_t c) noexcept {
 template <typename IT, typename IT2>
 inline size_t tolower(IT begin, IT end, IT2 dst) noexcept {
     size_t res = 0;
-    while (begin != end)
-    {
+
+    while (begin != end) {
         *dst++ = tolower(*begin++);
         ++res;
     }
+
     return res;
 }
 
 template <typename IT, typename IT2>
 inline size_t toupper(IT begin, IT end, IT2 dst) noexcept {
     size_t res = 0;
-    while (begin != end)
-    {
+
+    while (begin != end) {
         *dst++ = toupper(*begin++);
         ++res;
     }
-    return res;
-}
 
-template <typename IT>
-inline size_t tolower(IT begin, IT end) noexcept {
-    size_t res = 0;
-    while (begin != end)
-    {
-        *begin = tolower(*begin);
-        ++begin;
-        ++res;
-    }
-    return res;
-}
-
-template <typename IT>
-inline size_t toupper(IT begin, IT end) noexcept {
-    size_t res = 0;
-    while (begin != end)
-    {
-        *begin = toupper(*begin);
-        ++begin;
-        ++res;
-    }
     return res;
 }
 
 template <typename T>
 inline T toupper(const T& in) {
     T out;
-    out.reserve(in.size());
-    toupper(in.begin(), in.end(), std::back_inserter(out));
+
+    out.resize(in.size());
+    auto sz = toupper(in.begin(), in.end(), out.begin());
+    out.resize(sz);
+
     return out;
 }
 
 template <typename T>
 inline T tolower(const T& in) {
     T out;
-    out.reserve(in.size());
-    tolower(in.begin(), in.end(), std::back_inserter(out));
+
+    out.resize(in.size());
+    auto sz = tolower(in.begin(), in.end(), out.begin());
+    out.resize(sz);
+
     return out;
 }
 
-inline std::u32string toupper(std::u32string_view in) {
-    std::u32string out;
-    out.reserve(in.size());
-    toupper(in.begin(), in.end(), std::back_inserter(out));
+template <typename T = std::u32string>
+inline T toupper(std::u32string_view in) {
+    T out;
+
+    out.resize(in.size());
+    auto sz = toupper(in.begin(), in.end(), out.begin());
+    out.resize(sz);
+
     return out;
 }
 
-inline std::u32string tolower(std::u32string_view in) {
-    std::u32string out;
-    out.reserve(in.size());
-    tolower(in.begin(), in.end(), std::back_inserter(out));
+template <typename T = std::u32string>
+inline T tolower(std::u32string_view in) {
+    T out;
+
+    out.resize(in.size());
+    auto sz = tolower(in.begin(), in.end(), out.begin());
+    out.resize(sz);
+
     return out;
 }
 

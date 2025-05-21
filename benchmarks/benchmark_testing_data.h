@@ -4,7 +4,7 @@
 #define _UTFCASECONV_BENCH_TEST_DATA_
 
 // ASCII text
-#define TESTING_DATA_ASCII                                                     \
+#define TESTING_DATA_ASCII                                                               \
     "Call me Ishmael. Some years ago - never mind how long precisely - having \
     little or no money in my purse, and nothing particular to interest me on \
     shore, I thought I would sail about a little and see the watery part of \
@@ -58,7 +58,7 @@
     (c) Herman Melville, Moby-Dick, or The Whale, 1851"
 
 // just a translited version of the quote above
-#define TESTING_DATA_CYRILLIC                                                  \
+#define TESTING_DATA_CYRILLIC                                                            \
     "Цалл ме Ишмаел. Соме ыеарс аго - невер минд хов лонг прециселы - хавинг \
     литтле ор но монеы ин мы пурсе, анд нотхинг партицулар то интерест ме он \
     шоре, И тхоугхт И воулд саил абоут а литтле анд сее тхе ватеры парт оф \
@@ -111,7 +111,7 @@
     кновс, медитатион анд ватер аре веддед фор евер.\
     (ц) Херман Мелвилле, Мобы-Дицк, ор Тхе Вхале, 1851";
 
-#define TESTING_DATA_MIXED                                                     \
+#define TESTING_DATA_MIXED                                                               \
     "Cаll mе Ishmаеl. Sоmе yеаrs аgо - nеvеr mind hоw lоng prеcisеly - hаving \
     littlе оr nо mоnеy in my pursе, аnd nоthing pаrticulаr tо intеrеst mе оn \
     shоrе, I thоught I wоuld sаil аbоut а littlе аnd sее thе wаtеry pаrt оf \

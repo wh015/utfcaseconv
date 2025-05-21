@@ -1,17 +1,9 @@
 BasedOnStyle: LLVM
 IndentWidth: 4
-BreakBeforeBraces: Custom
-BraceWrapping:
-    AfterCaseLabel: true
-    AfterStruct: false
-    AfterControlStatement: Always
-    AfterUnion: true
-    BeforeElse: false
-    SplitEmptyFunction: false
-
+ColumnLimit: 90
+SeparateDefinitionBlocks: Always
 PointerAlignment: Left
 SortIncludes: false
-AlignAfterOpenBracket: true
+AlignAfterOpenBracket: Align
 AlwaysBreakTemplateDeclarations : Yes
-# IndentAccessModifiers: false    #clang 13
-# SeparateDefinitionStyle: Always #clang 14
+InsertNewlineAtEOF: true

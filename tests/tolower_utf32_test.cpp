@@ -118,6 +118,7 @@ TEST(utf32_tolower_sequence, string) {
 TEST(utf32_tolower_sequence, array) {
     char32_t src[] = U"НеКаЯ СтРоКа";
     char32_t expected[] = U"некая строка";
-    tolower(src, src + (sizeof(src) / sizeof(*src)));
+
+    tolower(src, src + (sizeof(src) / sizeof(*src)), src);
     ASSERT_EQ(memcmp(src, expected, sizeof(src)), 0);
 }

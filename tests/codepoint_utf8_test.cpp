@@ -13,8 +13,7 @@ TEST(utf8_to_utf32_codepoint, simple) {
     std::array expected = {U'A', U'п', U'Ⳁ', U'❤'};
 
     auto it = s.begin();
-    for (size_t i = 0; i < expected.size(); ++i)
-    {
+    for (size_t i = 0; i < expected.size(); ++i) {
         auto res = codepoint_8to32(it, s.end());
         ASSERT_EQ(res, expected[i]);
     }

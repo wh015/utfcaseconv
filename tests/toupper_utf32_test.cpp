@@ -118,6 +118,7 @@ TEST(utf32_toupper_sequence, string) {
 TEST(utf32_toupper_sequence, array) {
     char32_t src[] = U"НеКаЯ СтРоКа";
     char32_t expected[] = U"НЕКАЯ СТРОКА";
-    toupper(src, src + (sizeof(src) / sizeof(*src)));
+
+    toupper(src, src + (sizeof(src) / sizeof(*src)), src);
     ASSERT_EQ(memcmp(src, expected, sizeof(src)), 0);
 }
