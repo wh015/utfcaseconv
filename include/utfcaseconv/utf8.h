@@ -62,7 +62,8 @@ inline char32_t codepoint_8to32(IT& begin, IT end) noexcept {
         const auto type = TYPE_TABLE[octet];
         cdpt = (cdpt << 6) | (octet & 0x3F);
 
-        const auto lookup_index = static_cast<uint8_t>(state) + static_cast<uint8_t>(type);
+        const auto lookup_index =
+            static_cast<uint8_t>(state) + static_cast<uint8_t>(type);
         state = STATE_LOOKUP_TABLE[lookup_index];
     }
 
