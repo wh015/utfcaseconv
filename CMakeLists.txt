@@ -18,9 +18,12 @@ add_custom_command(OUTPUT ${TARGET_HEADERS}
 add_custom_target(generate_tables ALL DEPENDS ${TARGET_HEADERS})
 
 add_library(utf32caseconv INTERFACE)
-target_include_directories(utf32caseconv INTERFACE "${CMAKE_SOURCE_DIR}/include")
+target_include_directories(utf32caseconv INTERFACE "${CMAKE_BINARY_DIR}/include")
 
 include(GNUInstallDirs)
 install(
     FILES ${TARGET_HEADERS}
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/utf32caseconv")
+
+enable_testing()
+add_subdirectory(tests)
