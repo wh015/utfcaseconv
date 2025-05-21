@@ -22,10 +22,10 @@ def open_w(path):
 
 
 def array_begin(name, sz):
-    return "static constexpr std::array<char32_t, {0}> {1}{{{{\n".format(sz, name)
+    return f"static constexpr std::array<char32_t, {sz}> {name}{{{{\n"
 
 def array_value(val, desc):
-    return "    0x{0:08X}, // {1}\n".format(val, desc)
+    return f"    0x{val:08X}, // {desc}\n"
 
 def array_end():
     return "}};\n\n"
@@ -39,16 +39,16 @@ def array_make(items, name, key):
 
 
 def header_begin(guard):
-    return """#pragma once
+    return f"""#pragma once
 
-#ifndef {0}
-#define {0}
+#ifndef {guard}
+#define {guard}
 
 #include <array>
 
 namespace utfcaseconv {{\nnamespace utf32 {{
 
-""".format(guard)
+"""
 
 def header_end():
     return """}\n}
@@ -61,38 +61,38 @@ def output_write(path_out, items):
     upper = lambda item: item.upper
     lower = lambda item: item.lower
 
-    f = open_w(path_out)
-    f.write(header_begin(guard))
+    with open_w(path_out) as f:
+        f = open_w(path_out)
+        f.write(header_begin(guard))
 
-    items.sort(key=upper)
-    f.write(array_make(items, "upper_lower_src_tbl", upper))
-    f.write(array_make(items, "upper_lower_dst_tbl", lower))
+        items.sort(key=upper)
+        f.write(array_make(items, "upper_lower_src_tbl", upper))
+        f.write(array_make(items, "upper_lower_dst_tbl", lower))
 
-    items.sort(key=lower)
-    f.write(array_make(items, "lower_upper_src_tbl", lower))
-    f.write(array_make(items, "lower_upper_dst_tbl", upper))
+        items.sort(key=lower)
+        f.write(array_make(items, "lower_upper_src_tbl", lower))
+        f.write(array_make(items, "lower_upper_dst_tbl", upper))
 
-    f.write(header_end())
-    f.close()
+        f.write(header_end())
 
 
 def input_parse(path_in):
     items = []
 
-    f = open_r(path_in)
-    for line in f:
-        if line[0] == "#":
-            continue
+    with open_r(path_in) as f:
+        for line in f:
+            if line[0] == "#":
+                continue
 
-        tokens = line.split("; ")
-        if len(tokens) < 4 or (tokens[1] != "C" and tokens[1] != "S"):
-            continue
+            tokens = line.split("; ")
+            if len(tokens) < 4 or (tokens[1] != "C" and tokens[1] != "S"):
+                continue
 
-        upper = int(tokens[0], 16)
-        lower = int(tokens[2], 16)
-        desc = tokens[3].replace("CAPITAL ", "").replace("# ", "").strip()
-        items.append(CaseconvItem(upper, lower, desc))
-    f.close()
+            upper = int(tokens[0], 16)
+            lower = int(tokens[2], 16)
+            desc = tokens[3].replace("CAPITAL ", "").replace("# ", "").strip()
+            items.append(CaseconvItem(upper, lower, desc))
+
     return items
 
 
