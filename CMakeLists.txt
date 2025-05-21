@@ -27,7 +27,6 @@ if(MSVC)
 else()
     add_compile_options(
         -Wall
-        -msse4.2
     )
 
     if(WITH_PROFILING)
@@ -38,12 +37,20 @@ else()
     endif()
 endif()
 
+if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+    if("${CMAKE_HOST_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
+        set(WITH_LINUX_INTRINSICS ON)
+    endif()
+endif()
+
 set(BINARY_HEADERS_DIR "${CMAKE_BINARY_DIR}/include/utfcaseconv")
 set(SOURCE_HEADERS_DIR "${CMAKE_SOURCE_DIR}/include/utfcaseconv")
 set(TARGET_HEADERS
     "${SOURCE_HEADERS_DIR}/utf8.h"
     "${SOURCE_HEADERS_DIR}/utf8_constants.h"
     "${SOURCE_HEADERS_DIR}/utf32.h"
+    "${SOURCE_HEADERS_DIR}/platform.h"
+    "${SOURCE_HEADERS_DIR}/sse.h"
     "${BINARY_HEADERS_DIR}/utf32_tables.h"
 )
 

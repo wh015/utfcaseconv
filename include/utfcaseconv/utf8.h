@@ -5,27 +5,19 @@
 
 // Should be on the top.
 // See: https://travisdowns.github.io/blog/2019/11/19/toupper.html
-#include <utfcaseconv/utf32.h>
-#include <utfcaseconv/utf8_constants.h>
-
+#include <cctype>
 #include <iterator>
 #include <string>
 
-#include <immintrin.h>
+#include <utfcaseconv/utf32.h>
+#include <utfcaseconv/utf8_constants.h>
+#include <utfcaseconv/platform.h>
 
 // Such kind of UTF-8 conversion is based on
 // https://github.com/BobSteagall/utf_utils.git
 // Suitable of x86-64 or any other LE architecture.
 
 namespace utfcaseconv {
-
-static inline unsigned int ctz(unsigned int v) {
-#ifdef WIN32
-    return _tzcnt_u32(v);
-#else
-    return __builtin_ctz(v);
-#endif
-}
 
 template <typename IT>
 inline void codepoint_32to8(char32_t cdpt, IT& dst) noexcept {
@@ -70,52 +62,6 @@ inline char32_t codepoint_8to32(IT& begin, IT end) noexcept {
 }
 
 template <typename IT, typename IT2>
-inline void tolower_sse(IT& from, IT2& to) noexcept {
-    const char* pfrom = &(*from);
-    char* pto = &(*to);
-
-    auto src = _mm_loadu_si128((const __m128i*)pfrom);
-
-    auto ga = _mm_cmpgt_epi8(src, _mm_set1_epi8('A' - 1));
-    auto lz = _mm_cmpgt_epi8(_mm_set1_epi8('Z' + 1), src);
-
-    auto alpla = _mm_and_si128(ga, lz);
-
-    auto v0 = _mm_and_si128(alpla, _mm_set1_epi8(0x20));
-    auto v1 = _mm_xor_si128(src, v0);
-    _mm_storeu_si128((__m128i*)pto, v1);
-
-    auto mask = _mm_movemask_epi8(src);
-    auto count = (mask == 0) ? sizeof(__m128i) : ctz(mask);
-
-    from += count;
-    to += count;
-}
-
-template <typename IT, typename IT2>
-inline void toupper_sse(IT& from, IT2& to) noexcept {
-    const char* pfrom = &(*from);
-    char* pto = &(*to);
-
-    auto src = _mm_loadu_si128((const __m128i*)pfrom);
-
-    auto ga = _mm_cmpgt_epi8(src, _mm_set1_epi8('a' - 1));
-    auto lz = _mm_cmpgt_epi8(_mm_set1_epi8('z' + 1), src);
-
-    auto alpla = _mm_and_si128(ga, lz);
-
-    auto v0 = _mm_and_si128(alpla, _mm_set1_epi8(0x20));
-    auto v1 = _mm_xor_si128(src, v0);
-    _mm_storeu_si128((__m128i*)pto, v1);
-
-    auto mask = _mm_movemask_epi8(src);
-    auto count = (mask == 0) ? sizeof(__m128i) : ctz(mask);
-
-    from += count;
-    to += count;
-}
-
-template <typename IT, typename IT2>
 auto toupper(IT begin, IT end, IT2 dst) noexcept {
     static_assert(
         std::is_same<std::random_access_iterator_tag,
@@ -126,21 +72,22 @@ auto toupper(IT begin, IT end, IT2 dst) noexcept {
                      typename std::iterator_traits<IT2>::iterator_category>::value,
         "toupper() accepts random access iterators only");
 
-    constexpr typename std::iterator_traits<IT>::difference_type VECTOR_SIZE =
-        sizeof(__m128i);
-
     auto initial = begin;
 
-    while (std::distance(begin, end) >= VECTOR_SIZE) {
-        auto octet = static_cast<uint8_t>(*begin);
-        if (octet < BORDER_ASCII) {
-            toupper_sse(begin, dst);
-        } else {
-            auto cdpt = codepoint_8to32(begin, end);
-            if (cdpt == CODEPOINT32_INVALID) {
-                break;
+    if constexpr (PLATFORM >= Platform::SSE) {
+        constexpr typename std::iterator_traits<IT>::difference_type VECTOR_SIZE = 16;
+
+        while (std::distance(begin, end) >= VECTOR_SIZE) {
+            auto octet = static_cast<uint8_t>(*begin);
+            if (octet < BORDER_ASCII) {
+                toupper_sse(begin, dst);
+            } else {
+                auto cdpt = codepoint_8to32(begin, end);
+                if (cdpt == CODEPOINT32_INVALID) {
+                    break;
+                }
+                codepoint_32to8(utf32::toupper(cdpt), dst);
             }
-            codepoint_32to8(utf32::toupper(cdpt), dst);
         }
     }
 
@@ -173,21 +120,22 @@ auto tolower(IT begin, IT end, IT2 dst) noexcept {
                      typename std::iterator_traits<IT2>::iterator_category>::value,
         "tolower() accepts random access iterators only");
 
-    constexpr typename std::iterator_traits<IT>::difference_type VECTOR_SIZE =
-        sizeof(__m128i);
-
     auto initial = begin;
 
-    while (std::distance(begin, end) >= VECTOR_SIZE) {
-        auto octet = static_cast<uint8_t>(*begin);
-        if (octet < BORDER_ASCII) {
-            tolower_sse(begin, dst);
-        } else {
-            auto cdpt = codepoint_8to32(begin, end);
-            if (cdpt == CODEPOINT32_INVALID) {
-                break;
+    if constexpr (PLATFORM >= Platform::SSE) {
+        constexpr typename std::iterator_traits<IT>::difference_type VECTOR_SIZE = 16;
+
+        while (std::distance(begin, end) >= VECTOR_SIZE) {
+            auto octet = static_cast<uint8_t>(*begin);
+            if (octet < BORDER_ASCII) {
+                tolower_sse(begin, dst);
+            } else {
+                auto cdpt = codepoint_8to32(begin, end);
+                if (cdpt == CODEPOINT32_INVALID) {
+                    break;
+                }
+                codepoint_32to8(utf32::tolower(cdpt), dst);
             }
-            codepoint_32to8(utf32::tolower(cdpt), dst);
         }
     }
 
