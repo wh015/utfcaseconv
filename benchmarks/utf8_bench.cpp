@@ -1,5 +1,6 @@
 #include <string>
 #include <cstring>
+#include <memory>
 
 #include <benchmark/benchmark.h>
 
@@ -171,10 +172,10 @@ using namespace utfcaseconv;
 static void BM_utf8_ascii_lower(benchmark::State& state) {
     const char* src = ascii;
     size_t size = sizeof(ascii);
-    char* dst = new char[size];
+    auto dst = std::unique_ptr<char>(new char[size]);
     for (auto _ : state)
     {
-        tolower(src, src + size, dst);
+        tolower(src, src + size, dst.get());
     }
 }
 BENCHMARK(BM_utf8_ascii_lower);
@@ -182,10 +183,10 @@ BENCHMARK(BM_utf8_ascii_lower);
 static void BM_utf8_ascii_upper(benchmark::State& state) {
     const char* src = ascii;
     size_t size = sizeof(ascii);
-    char* dst = new char[size];
+    auto dst = std::unique_ptr<char>(new char[size]);
     for (auto _ : state)
     {
-        toupper(src, src + size, dst);
+        toupper(src, src + size, dst.get());
     }
 }
 BENCHMARK(BM_utf8_ascii_upper);
@@ -193,10 +194,10 @@ BENCHMARK(BM_utf8_ascii_upper);
 static void BM_utf8_cyrillic_lower(benchmark::State& state) {
     const char* src = cyrillic;
     size_t size = sizeof(cyrillic);
-    char* dst = new char[size];
+    auto dst = std::unique_ptr<char>(new char[size]);
     for (auto _ : state)
     {
-        tolower(src, src + size, dst);
+        tolower(src, src + size, dst.get());
     }
 }
 BENCHMARK(BM_utf8_cyrillic_lower);
@@ -204,10 +205,10 @@ BENCHMARK(BM_utf8_cyrillic_lower);
 static void BM_utf8_cyrillic_upper(benchmark::State& state) {
     const char* src = cyrillic;
     size_t size = sizeof(cyrillic);
-    char* dst = new char[size];
+    auto dst = std::unique_ptr<char>(new char[size]);
     for (auto _ : state)
     {
-        toupper(src, src + size, dst);
+        toupper(src, src + size, dst.get());
     }
 }
 BENCHMARK(BM_utf8_cyrillic_upper);
@@ -215,10 +216,10 @@ BENCHMARK(BM_utf8_cyrillic_upper);
 static void BM_utf8_mixed_lower(benchmark::State& state) {
     const char* src = mixed;
     size_t size = sizeof(mixed);
-    char* dst = new char[size];
+    auto dst = std::unique_ptr<char>(new char[size]);
     for (auto _ : state)
     {
-        tolower(src, src + size, dst);
+        tolower(src, src + size, dst.get());
     }
 }
 BENCHMARK(BM_utf8_mixed_lower);
@@ -226,10 +227,10 @@ BENCHMARK(BM_utf8_mixed_lower);
 static void BM_utf8_mixed_upper(benchmark::State& state) {
     const char* src = mixed;
     size_t size = sizeof(mixed);
-    char* dst = new char[size];
+    auto dst = std::unique_ptr<char>(new char[size]);
     for (auto _ : state)
     {
-        toupper(src, src + size, dst);
+        toupper(src, src + size, dst.get());
     }
 }
 BENCHMARK(BM_utf8_mixed_upper);
