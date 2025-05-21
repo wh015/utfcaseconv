@@ -25,6 +25,8 @@ if(MSVC)
         /utf-8 # to support multibyte char literals in tests
     )
 else()
+    add_compile_options(-msse4.2)
+
     if(WITH_PROFILING)
         add_compile_options(
             -fno-omit-frame-pointer # to collect stacktrace
