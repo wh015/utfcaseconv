@@ -8,6 +8,8 @@
 
 namespace utfcaseconv {
 
+constexpr uint8_t ASCII_CASEFOLDING_OFFSET = 'a' - 'A';
+
 enum State : uint8_t {
     BGN = 0,   // Begin
     ERR = 12,  // Invalid sequence

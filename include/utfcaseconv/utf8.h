@@ -78,7 +78,7 @@ size_t toupper(IT begin, IT end, IT2 dst) noexcept {
         auto octet = static_cast<uint8_t>(*begin);
         if (octet < BORDER_ASCII)
         {
-            *dst++ = ::toupper(octet);
+            *dst++ = (octet < 'a' || octet > 'z') ? octet : octet - ASCII_CASEFOLDING_OFFSET;
             ++res;
             ++begin;
         } else
@@ -102,7 +102,7 @@ size_t tolower(IT begin, IT end, IT2 dst) noexcept {
         auto octet = static_cast<uint8_t>(*begin);
         if (octet < BORDER_ASCII)
         {
-            *dst++ = ::tolower(octet);
+            *dst++ = (octet < 'A' || octet > 'Z') ? octet : octet + ASCII_CASEFOLDING_OFFSET;
             ++res;
             ++begin;
         } else
