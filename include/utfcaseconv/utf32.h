@@ -16,13 +16,29 @@
 namespace utfcaseconv {
 namespace utf32 {
 
+// faster binary search
+// https://mhdm.dev/posts/sb_lower_bound/
+template <class ForwardIt, class T>
+constexpr ForwardIt sb_lower_bound(ForwardIt first, ForwardIt last, const T value) {
+   auto length = last - first;
+   while (length > 0) {
+      auto half = length / 2;
+      if (first[half] < value) {
+         // length - half equals half + length % 2
+         first += length - half;
+      }
+      length = half;
+   }
+   return first;
+}
+
 template <size_t sz>
 char32_t convert(char32_t c, const std::array<char32_t, sz>& src,
                  const std::array<char32_t, sz>& dst) noexcept {
     static_assert(sz > 0, "caseconv tables can not be empty");
 
     auto r = c;
-    const auto it = std::lower_bound(src.begin(), src.end(), c);
+    const auto it = sb_lower_bound(src.begin(), src.end(), c);
     if (it != src.end())
     {
         if (*it == c)
