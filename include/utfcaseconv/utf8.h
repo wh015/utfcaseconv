@@ -140,8 +140,9 @@ inline T tolower(const T& in) {
     return out;
 }
 
-inline std::string toupper(const std::string_view in) {
-    std::string out;
+template <typename T = std::string>
+inline T toupper(const std::string_view in) {
+    T out;
 
     out.resize(in.size());
     auto sz = toupper(in.begin(), in.end(), out.begin());
@@ -150,8 +151,9 @@ inline std::string toupper(const std::string_view in) {
     return out;
 }
 
-inline std::string tolower(const std::string_view in) {
-    std::string out;
+template <typename T = std::string>
+inline T tolower(const std::string_view in) {
+    T out;
 
     out.resize(in.size());
     auto sz = tolower(in.begin(), in.end(), out.begin());

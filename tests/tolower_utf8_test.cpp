@@ -1,5 +1,6 @@
 #include <string>
 #include <cstring>
+#include <vector>
 
 #include <utfcaseconv/utf8.h>
 
@@ -84,6 +85,14 @@ TEST(utf8_tolower_string, non_bicameral) {
 TEST(utf8_tolower_string, string_view) {
     std::string_view s = "НеКаЯ СтРоКа";
     ASSERT_EQ(tolower(s), "некая строка");
+}
+
+TEST(utf8_tolower_string, vector) {
+    std::string_view s = "НеКаЯ СтРоКа";
+    char expected[] = "некая строка";
+
+    auto v = tolower<std::vector<char>>(s);
+    ASSERT_EQ(memcmp(v.data(), expected, v.size()), 0);
 }
 
 TEST(utf8_tolower_string, array) {
