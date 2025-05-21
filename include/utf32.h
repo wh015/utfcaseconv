@@ -3,6 +3,7 @@
 #ifndef _UTFCASECONV_UTF32_H_
 #define _UTFCASECONV_UTF32_H_
 
+// Should be on the top.
 // See: https://travisdowns.github.io/blog/2019/11/19/toupper.html
 #include <ctype.h>
 
@@ -38,25 +39,25 @@ namespace utf32 {
     }
 
     template<typename IT, typename IT2> inline void tolower(IT begin, IT end, IT2 dst) {
-        for(; begin != end; begin = std::next(begin), dst = std::next(dst)) {
+        for(; begin != end; ++begin, ++dst) {
             *dst = tolower(*dst);
         }
     }
 
     template<typename IT, typename IT2> inline void toupper(IT begin, IT end, IT2 dst) {
-        for(; begin != end; begin = std::next(begin), dst = std::next(dst)) {
+        for(; begin != end; ++begin, ++dst) {
             *dst = toupper(*dst);
         }
     }
 
     template<typename IT> inline void tolower(IT begin, IT end) {
-        for(; begin != end; begin = std::next(begin)) {
+        for(; begin != end; ++begin) {
             *begin = tolower(*begin);
         }
     }
 
     template<typename IT> inline void toupper(IT begin, IT end) {
-        for(; begin != end; begin = std::next(begin)) {
+        for(; begin != end; ++begin) {
             *begin = toupper(*begin);
         }
     }

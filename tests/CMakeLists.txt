@@ -11,3 +11,15 @@ add_test(NAME "toupper-utf32-test" COMMAND toupper_utf32_test)
 add_executable(tolower_utf32_test tolower_utf32_test.cpp)
 target_link_libraries(tolower_utf32_test PRIVATE utfcaseconv Catch2::Catch2WithMain)
 add_test(NAME "tolower-utf32-test" COMMAND tolower_utf32_test)
+
+add_executable(codepoint_utf8_test codepoint_utf8_test.cpp)
+target_link_libraries(codepoint_utf8_test PRIVATE utfcaseconv Catch2::Catch2WithMain)
+add_test(NAME "codepoint-utf8-test" COMMAND codepoint_utf8_test)
+
+add_executable(toupper_utf8_test toupper_utf8_test.cpp)
+target_link_libraries(toupper_utf8_test PRIVATE utfcaseconv Catch2::Catch2WithMain)
+add_test(NAME "toupper-utf8-test" COMMAND toupper_utf8_test)
+
+add_executable(tolower_utf8_test tolower_utf8_test.cpp)
+target_link_libraries(tolower_utf8_test PRIVATE utfcaseconv Catch2::Catch2WithMain)
+add_test(NAME "tolower-utf8-test" COMMAND tolower_utf8_test)
