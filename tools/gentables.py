@@ -22,7 +22,7 @@ def open_w(path):
 
 
 def array_begin(name, sz):
-    return "constexpr std::array<char32_t, {0}> {1}{{{{\n".format(sz, name)
+    return "static constexpr std::array<char32_t, {0}> {1}{{{{\n".format(sz, name)
 
 def array_value(val, desc):
     return "    0x{0:08X}, // {1}\n".format(val, desc)
@@ -40,12 +40,13 @@ def array_make(items, name, key):
 
 def header_begin(guard):
     return """#pragma once
+
 #ifndef {0}
 #define {0}
 
 #include <array>
 
-namespace {{
+namespace utf32caseconv {{
 
 """.format(guard)
 
