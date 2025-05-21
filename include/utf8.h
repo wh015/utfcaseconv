@@ -18,7 +18,7 @@
 namespace utfcaseconv {
 
 template <typename IT>
-size_t codepoint_32to8(char32_t cdpt, IT& dst) {
+size_t codepoint_32to8(char32_t cdpt, IT& dst) noexcept {
     if (cdpt <= 0x7F)
     {
         *dst++ = (char)(cdpt);
@@ -68,7 +68,7 @@ inline char32_t codepoint_8to32(IT& begin, IT end) noexcept {
 }
 
 template <typename IT, typename IT2>
-inline size_t toupper(IT begin, IT end, IT2 dst) {
+inline size_t toupper(IT begin, IT end, IT2 dst) noexcept {
     auto res = 0;
     while (begin != end)
     {
@@ -92,7 +92,7 @@ inline size_t toupper(IT begin, IT end, IT2 dst) {
 }
 
 template <typename IT, typename IT2>
-inline size_t tolower(IT begin, IT end, IT2 dst) {
+inline size_t tolower(IT begin, IT end, IT2 dst) noexcept {
     auto res = 0;
     while (begin != end)
     {

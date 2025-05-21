@@ -18,7 +18,7 @@ namespace utf32 {
 
 template <size_t sz>
 char32_t convert(char32_t c, const std::array<char32_t, sz>& src,
-                 const std::array<char32_t, sz>& dst) {
+                 const std::array<char32_t, sz>& dst) noexcept {
     static_assert(sz > 0, "caseconv tables can not be empty");
 
     auto r = c;
@@ -34,16 +34,16 @@ char32_t convert(char32_t c, const std::array<char32_t, sz>& src,
     return r;
 }
 
-static inline char32_t tolower(char32_t c) {
+static inline char32_t tolower(char32_t c) noexcept {
     return convert(c, upper_lower_src_tbl, upper_lower_dst_tbl);
 }
 
-static inline char32_t toupper(char32_t c) {
+static inline char32_t toupper(char32_t c) noexcept {
     return convert(c, lower_upper_src_tbl, lower_upper_dst_tbl);
 }
 
 template <typename IT, typename IT2>
-inline size_t tolower(IT begin, IT end, IT2 dst) {
+inline size_t tolower(IT begin, IT end, IT2 dst) noexcept {
     size_t res = 0;
     while (begin != end)
     {
@@ -54,7 +54,7 @@ inline size_t tolower(IT begin, IT end, IT2 dst) {
 }
 
 template <typename IT, typename IT2>
-inline size_t toupper(IT begin, IT end, IT2 dst) {
+inline size_t toupper(IT begin, IT end, IT2 dst) noexcept {
     size_t res = 0;
     while (begin != end)
     {
@@ -65,7 +65,7 @@ inline size_t toupper(IT begin, IT end, IT2 dst) {
 }
 
 template <typename IT>
-inline size_t tolower(IT begin, IT end) {
+inline size_t tolower(IT begin, IT end) noexcept {
     size_t res = 0;
     while (begin != end)
     {
@@ -77,7 +77,7 @@ inline size_t tolower(IT begin, IT end) {
 }
 
 template <typename IT>
-inline size_t toupper(IT begin, IT end) {
+inline size_t toupper(IT begin, IT end) noexcept {
     size_t res = 0;
     while (begin != end)
     {
