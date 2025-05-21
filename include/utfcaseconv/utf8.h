@@ -117,6 +117,15 @@ inline void toupper_sse(IT& from, IT2& to) noexcept {
 
 template <typename IT, typename IT2>
 auto toupper(IT begin, IT end, IT2 dst) noexcept {
+    static_assert(
+        std::is_same<std::random_access_iterator_tag,
+                     typename std::iterator_traits<IT>::iterator_category>::value,
+        "toupper() accepts random access iterators only");
+    static_assert(
+        std::is_same<std::random_access_iterator_tag,
+                     typename std::iterator_traits<IT2>::iterator_category>::value,
+        "toupper() accepts random access iterators only");
+
     constexpr typename std::iterator_traits<IT>::difference_type VECTOR_SIZE =
         sizeof(__m128i);
 
@@ -155,6 +164,15 @@ auto toupper(IT begin, IT end, IT2 dst) noexcept {
 
 template <typename IT, typename IT2>
 auto tolower(IT begin, IT end, IT2 dst) noexcept {
+    static_assert(
+        std::is_same<std::random_access_iterator_tag,
+                     typename std::iterator_traits<IT>::iterator_category>::value,
+        "tolower() accepts random access iterators only");
+    static_assert(
+        std::is_same<std::random_access_iterator_tag,
+                     typename std::iterator_traits<IT2>::iterator_category>::value,
+        "tolower() accepts random access iterators only");
+
     constexpr typename std::iterator_traits<IT>::difference_type VECTOR_SIZE =
         sizeof(__m128i);
 
