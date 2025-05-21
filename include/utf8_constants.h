@@ -37,7 +37,8 @@ enum Type : uint8_t {
     L4C = 11, // F4              Leading byte range C / 4-byte sequence
 };
 
-static constexpr char32_t CodePoint32Invalid = 0xFFFFFFFF;
+static constexpr char32_t CODEPOINT32_INVALID = 0xFFFFFFFF;
+static constexpr char ASCII_BORDER = 0x80;
 
 // clang-format off
 static constexpr std::array<uint8_t, 256> octetTable = {{

@@ -55,7 +55,7 @@ inline char32_t codepoint_8to32(IT& begin, IT end) noexcept {
     {
         if (begin == end)
         {
-            return CodePoint32Invalid;
+            return CODEPOINT32_INVALID;
         }
 
         octet = static_cast<uint8_t>(*begin++);
@@ -73,7 +73,7 @@ inline size_t toupper(IT begin, IT end, IT2 dst) {
     while (begin != end)
     {
         auto octet = static_cast<uint8_t>(*begin);
-        if (octet < 0x80)
+        if (octet < ASCII_BORDER)
         {
             *dst++ = ::toupper(octet);
             ++res;
@@ -81,7 +81,7 @@ inline size_t toupper(IT begin, IT end, IT2 dst) {
         } else
         {
             auto cdpt = codepoint_8to32(begin, end);
-            if (cdpt == CodePoint32Invalid)
+            if (cdpt == CODEPOINT32_INVALID)
             {
                 break;
             }
@@ -97,7 +97,7 @@ inline size_t tolower(IT begin, IT end, IT2 dst) {
     while (begin != end)
     {
         auto octet = static_cast<uint8_t>(*begin);
-        if (octet < 0x80)
+        if (octet < ASCII_BORDER)
         {
             *dst++ = ::tolower(octet);
             ++res;
@@ -105,7 +105,7 @@ inline size_t tolower(IT begin, IT end, IT2 dst) {
         } else
         {
             auto cdpt = codepoint_8to32(begin, end);
-            if (cdpt == CodePoint32Invalid)
+            if (cdpt == CODEPOINT32_INVALID)
             {
                 break;
             }
