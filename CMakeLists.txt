@@ -4,14 +4,22 @@ project(utf32caseconv LANGUAGES CXX VERSION 0.0.1)
 
 option(WITH_TESTS "Build common tests." ON)
 
+include_directories(BEFORE SYSTEM ${CMAKE_INCLUDE_PATH})
+
+if(MSVC)
+    add_compile_options(
+        /utf-8 # to support multibyte char literals in tests
+    )
+endif()
+
 set (TARGET_HEADERS
     "${CMAKE_BINARY_DIR}/include/utf32caseconv/utf32caseconv.h"
     "${CMAKE_BINARY_DIR}/include/utf32caseconv/utf32caseconv_tables.h"
 )
 
 add_custom_command(OUTPUT ${TARGET_HEADERS}
-    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/include/utf32caseconv.h" "${CMAKE_BINARY_DIR}/include/utf32caseconv/utf32caseconv.h"
-    COMMAND python3 "${CMAKE_SOURCE_DIR}/tools/gentables.py" -i "${CMAKE_SOURCE_DIR}/assets/CaseFolding.txt" -o "${CMAKE_BINARY_DIR}/include/utf32caseconv/utf32caseconv_tables.h"
+    COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_SOURCE_DIR}/include/utf32caseconv.h" "${CMAKE_BINARY_DIR}/include/utf32caseconv/utf32caseconv.h"
+    COMMAND "python3" "${CMAKE_SOURCE_DIR}/tools/gentables.py" -i "${CMAKE_SOURCE_DIR}/assets/CaseFolding.txt" -o "${CMAKE_BINARY_DIR}/include/utf32caseconv/utf32caseconv_tables.h"
     DEPENDS "${CMAKE_SOURCE_DIR}/assets/CaseFolding.txt" "${CMAKE_SOURCE_DIR}/tools/gentables.py" "${CMAKE_SOURCE_DIR}/include/utf32caseconv.h"
     COMMENT "Making headers"
     VERBATIM
