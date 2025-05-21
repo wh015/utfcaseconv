@@ -19,8 +19,7 @@
 
 namespace utfcaseconv {
 
-static inline unsigned int ctz(unsigned int v)
-{
+static inline unsigned int ctz(unsigned int v) {
 #ifdef WIN32
     return _tzcnt_u32(v);
 #else
@@ -29,27 +28,22 @@ static inline unsigned int ctz(unsigned int v)
 }
 
 template <typename IT>
-inline size_t codepoint_32to8(char32_t cdpt, IT& dst) noexcept {
+inline void codepoint_32to8(char32_t cdpt, IT& dst) noexcept {
     if (cdpt < BORDER_ASCII) {
         *dst++ = static_cast<char>(cdpt);
-        return 1;
     } else if (cdpt < BORDER_2BYTE) {
         *dst++ = static_cast<char>(0xC0 | ((cdpt >> 6) & 0x1F));
         *dst++ = static_cast<char>(0x80 | (cdpt & 0x3F));
-        return 2;
     } else if (cdpt < BORDER_3BYTE) {
         *dst++ = static_cast<char>(0xE0 | ((cdpt >> 12) & 0x0F));
         *dst++ = static_cast<char>(0x80 | ((cdpt >> 6) & 0x3F));
         *dst++ = static_cast<char>(0x80 | (cdpt & 0x3F));
-        return 3;
     } else if (cdpt < BORDER_4BYTE) {
         *dst++ = static_cast<char>(0xF0 | ((cdpt >> 18) & 0x07));
         *dst++ = static_cast<char>(0x80 | ((cdpt >> 12) & 0x3F));
         *dst++ = static_cast<char>(0x80 | ((cdpt >> 6) & 0x3F));
         *dst++ = static_cast<char>(0x80 | (cdpt & 0x3F));
-        return 4;
     }
-    return 0;
 }
 
 template <typename IT>
@@ -76,9 +70,9 @@ inline char32_t codepoint_8to32(IT& begin, IT end) noexcept {
 }
 
 template <typename IT, typename IT2>
-inline size_t tolower_sse(IT& from, IT2& to) {
-    const char *pfrom = &(*from);
-    char *pto = &(*to);
+inline void tolower_sse(IT& from, IT2& to) noexcept {
+    const char* pfrom = &(*from);
+    char* pto = &(*to);
 
     auto src = _mm_loadu_si128((const __m128i*)pfrom);
 
@@ -89,21 +83,19 @@ inline size_t tolower_sse(IT& from, IT2& to) {
 
     auto v0 = _mm_and_si128(alpla, _mm_set1_epi8(0x20));
     auto v1 = _mm_xor_si128(src, v0);
-    _mm_storeu_si128((__m128i*)&(*to), v1);
+    _mm_storeu_si128((__m128i*)pto, v1);
 
     auto mask = _mm_movemask_epi8(src);
     auto count = (mask == 0) ? sizeof(__m128i) : ctz(mask);
 
     from += count;
     to += count;
-
-    return count;
 }
 
 template <typename IT, typename IT2>
-inline size_t toupper_sse(IT& from, IT2& to) {
-    const char *pfrom = &(*from);
-    char *pto = &(*to);
+inline void toupper_sse(IT& from, IT2& to) noexcept {
+    const char* pfrom = &(*from);
+    char* pto = &(*to);
 
     auto src = _mm_loadu_si128((const __m128i*)pfrom);
 
@@ -114,32 +106,32 @@ inline size_t toupper_sse(IT& from, IT2& to) {
 
     auto v0 = _mm_and_si128(alpla, _mm_set1_epi8(0x20));
     auto v1 = _mm_xor_si128(src, v0);
-    _mm_storeu_si128((__m128i*)&(*to), v1);
+    _mm_storeu_si128((__m128i*)pto, v1);
 
     auto mask = _mm_movemask_epi8(src);
     auto count = (mask == 0) ? sizeof(__m128i) : ctz(mask);
 
     from += count;
     to += count;
-
-    return count;
 }
 
-
 template <typename IT, typename IT2>
-size_t toupper(IT begin, IT end, IT2 dst) noexcept {
-    auto res = 0;
+auto toupper(IT begin, IT end, IT2 dst) noexcept {
+    constexpr typename std::iterator_traits<IT>::difference_type VECTOR_SIZE =
+        sizeof(__m128i);
 
-    while (std::distance(begin, end) >= sizeof(__m128i)) {
+    auto initial = begin;
+
+    while (std::distance(begin, end) >= VECTOR_SIZE) {
         auto octet = static_cast<uint8_t>(*begin);
         if (octet < BORDER_ASCII) {
-            res += toupper_sse(begin, dst);
+            toupper_sse(begin, dst);
         } else {
             auto cdpt = codepoint_8to32(begin, end);
             if (cdpt == CODEPOINT32_INVALID) {
                 break;
             }
-            res += codepoint_32to8(utf32::toupper(cdpt), dst);
+            codepoint_32to8(utf32::toupper(cdpt), dst);
         }
     }
 
@@ -148,34 +140,36 @@ size_t toupper(IT begin, IT end, IT2 dst) noexcept {
         if (octet < BORDER_ASCII) {
             *dst++ =
                 (octet < 'a' || octet > 'z') ? octet : octet - ASCII_CASEFOLDING_OFFSET;
-            ++res;
             ++begin;
         } else {
             auto cdpt = codepoint_8to32(begin, end);
             if (cdpt == CODEPOINT32_INVALID) {
                 break;
             }
-            res += codepoint_32to8(utf32::toupper(cdpt), dst);
+            codepoint_32to8(utf32::toupper(cdpt), dst);
         }
     }
 
-    return res;
+    return std::distance(initial, begin);
 }
 
 template <typename IT, typename IT2>
-size_t tolower(IT begin, IT end, IT2 dst) noexcept {
-    auto res = 0;
+auto tolower(IT begin, IT end, IT2 dst) noexcept {
+    constexpr typename std::iterator_traits<IT>::difference_type VECTOR_SIZE =
+        sizeof(__m128i);
 
-    while (std::distance(begin, end) >= sizeof(__m128i)) {
+    auto initial = begin;
+
+    while (std::distance(begin, end) >= VECTOR_SIZE) {
         auto octet = static_cast<uint8_t>(*begin);
         if (octet < BORDER_ASCII) {
-            res += tolower_sse(begin, dst);
+            tolower_sse(begin, dst);
         } else {
             auto cdpt = codepoint_8to32(begin, end);
             if (cdpt == CODEPOINT32_INVALID) {
                 break;
             }
-            res += codepoint_32to8(utf32::tolower(cdpt), dst);
+            codepoint_32to8(utf32::tolower(cdpt), dst);
         }
     }
 
@@ -184,18 +178,17 @@ size_t tolower(IT begin, IT end, IT2 dst) noexcept {
         if (octet < BORDER_ASCII) {
             *dst++ =
                 (octet < 'A' || octet > 'Z') ? octet : octet + ASCII_CASEFOLDING_OFFSET;
-            ++res;
             ++begin;
         } else {
             auto cdpt = codepoint_8to32(begin, end);
             if (cdpt == CODEPOINT32_INVALID) {
                 break;
             }
-            res += codepoint_32to8(utf32::tolower(cdpt), dst);
+            codepoint_32to8(utf32::tolower(cdpt), dst);
         }
     }
 
-    return res;
+    return std::distance(initial, begin);
 }
 
 template <typename T>
