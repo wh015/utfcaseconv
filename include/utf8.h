@@ -9,6 +9,7 @@
 #include "utf8_constants.h"
 
 #include <iterator>
+#include <string>
 
 // Such kind of UTF-8 conversion is based on
 // https://github.com/BobSteagall/utf_utils.git
@@ -108,6 +109,20 @@ inline T toupper(const T& in) {
 template <typename T>
 inline T tolower(const T& in) {
     T out;
+    out.reserve(in.size());
+    tolower(in.begin(), in.end(), std::back_inserter(out));
+    return out;
+}
+
+inline std::string toupper(const std::string_view in) {
+    std::string out;
+    out.reserve(in.size());
+    toupper(in.begin(), in.end(), std::back_inserter(out));
+    return out;
+}
+
+inline std::string tolower(const std::string_view in) {
+    std::string out;
     out.reserve(in.size());
     tolower(in.begin(), in.end(), std::back_inserter(out));
     return out;

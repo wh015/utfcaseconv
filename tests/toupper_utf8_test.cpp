@@ -13,8 +13,8 @@ TEST_CASE("Latin") {
 }
 
 TEST_CASE("Cyrillic") {
-    std::string s = "ПоЗиТиВ";
-    REQUIRE(toupper(s) == "ПОЗИТИВ");
+    std::string s = "НеКаЯ СтРоКа";
+    REQUIRE(toupper(s) == "НЕКАЯ СТРОКА");
 }
 
 TEST_CASE("Greek") {
@@ -81,9 +81,14 @@ TEST_CASE("Non-bicameral") {
     REQUIRE(toupper(s) == "غ𐠔❤デ東大ᚦఅஊஊ");
 }
 
-TEST_CASE("Arrays") {
-    char src[] = "ПоЗиТиВ";
-    char expected[] = "ПОЗИТИВ";
+TEST_CASE("String view") {
+    std::string_view s = "НеКаЯ СтРоКа";
+    REQUIRE(toupper(s) == "НЕКАЯ СТРОКА");
+}
+
+TEST_CASE("Array") {
+    char src[] = "НеКаЯ СтРоКа";
+    char expected[] = "НЕКАЯ СТРОКА";
 
     toupper(src, src + (sizeof(src) / sizeof(*src)), src);
     REQUIRE(memcmp(src, expected, sizeof(src)) == 0);
