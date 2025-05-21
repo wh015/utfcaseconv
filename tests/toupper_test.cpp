@@ -1,10 +1,7 @@
 #include <catch2/catch.hpp>
 
-#include <utf32caseconv/utf32caseconv.h>
-
-using namespace utf32caseconv;
-
-#include <catch2/catch.hpp>
+#include <string>
+#include <cstring>
 
 #include <utf32caseconv/utf32caseconv.h>
 
@@ -111,4 +108,16 @@ TEST_CASE("Non-bicameral") {
     REQUIRE(toupper(U'ㄱ') == U'ㄱ');
     REQUIRE(toupper(U'ஊ') == U'ஊ');
     REQUIRE(toupper(U'ฌ') == U'ฌ');
+}
+
+TEST_CASE("Strings") {
+    std::u32string src = U"НеКаЯ СтРоКа";
+    REQUIRE(toupper(src) == U"НЕКАЯ СТРОКА");
+}
+
+TEST_CASE("Arrays") {
+    char32_t src[] = U"НеКаЯ СтРоКа";
+    char32_t expected[] = U"НЕКАЯ СТРОКА";
+    toupper_inplace(src, sizeof(src) / sizeof(*src));
+    REQUIRE(memcmp(src, expected, sizeof(src)) == 0);
 }
