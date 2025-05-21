@@ -5,8 +5,8 @@
 
 // Should be on the top.
 // See: https://travisdowns.github.io/blog/2019/11/19/toupper.html
-#include "utf32.h"
-#include "utf8_constants.h"
+#include <utfcaseconv/utf32.h>
+#include <utfcaseconv/utf8_constants.h>
 
 #include <iterator>
 #include <string>

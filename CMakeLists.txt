@@ -21,29 +21,28 @@ if(MSVC)
     )
 endif()
 
-set(TARGET_HEADERS_DIR "${CMAKE_BINARY_DIR}/include/utfcaseconv")
+set(BINARY_HEADERS_DIR "${CMAKE_BINARY_DIR}/include/utfcaseconv")
+set(SOURCE_HEADERS_DIR "${CMAKE_SOURCE_DIR}/include/utfcaseconv")
 set(TARGET_HEADERS
-    "${TARGET_HEADERS_DIR}/utf8.h"
-    "${TARGET_HEADERS_DIR}/utf8_constants.h"
-    "${TARGET_HEADERS_DIR}/utf32.h"
-    "${TARGET_HEADERS_DIR}/utf32_tables.h"
+    "${SOURCE_HEADERS_DIR}/utf8.h"
+    "${SOURCE_HEADERS_DIR}/utf8_constants.h"
+    "${SOURCE_HEADERS_DIR}/utf32.h"
+    "${BINARY_HEADERS_DIR}/utf32_tables.h"
 )
 
-add_custom_command(OUTPUT ${TARGET_HEADERS}
-    COMMAND "${CMAKE_COMMAND}" -E make_directory "${TARGET_HEADERS_DIR}"
-    COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_SOURCE_DIR}/include/utf8.h" "${TARGET_HEADERS_DIR}/utf8.h"
-    COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_SOURCE_DIR}/include/utf8_constants.h" "${TARGET_HEADERS_DIR}/utf8_constants.h"
-    COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_SOURCE_DIR}/include/utf32.h" "${TARGET_HEADERS_DIR}/utf32.h"
-    COMMAND "${Python3_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tools/gentables.py" -i "${CMAKE_SOURCE_DIR}/assets/CaseFolding.txt" -o "${TARGET_HEADERS_DIR}/utf32_tables.h"
-    DEPENDS "${CMAKE_SOURCE_DIR}/assets/CaseFolding.txt" "${CMAKE_SOURCE_DIR}/tools/gentables.py" "${CMAKE_SOURCE_DIR}/include/utf32.h" "${CMAKE_SOURCE_DIR}/include/utf8.h"
+add_custom_command(OUTPUT "${BINARY_HEADERS_DIR}/utf32_tables.h"
+    COMMAND "${CMAKE_COMMAND}" -E make_directory "${BINARY_HEADERS_DIR}"
+    COMMAND "${Python3_EXECUTABLE}" "${CMAKE_SOURCE_DIR}/tools/gentables.py" -i "${CMAKE_SOURCE_DIR}/assets/CaseFolding.txt" -o "${BINARY_HEADERS_DIR}/utf32_tables.h"
+    DEPENDS "${CMAKE_SOURCE_DIR}/assets/CaseFolding.txt" "${CMAKE_SOURCE_DIR}/tools/gentables.py"
     COMMENT "Making headers"
     VERBATIM
 )
 
-add_custom_target(generate_tables ALL DEPENDS ${TARGET_HEADERS})
+add_custom_target(generate_tables ALL DEPENDS "${BINARY_HEADERS_DIR}/utf32_tables.h")
 
 add_library(utfcaseconv INTERFACE ${TARGET_HEADERS})
 target_include_directories(utfcaseconv INTERFACE "${CMAKE_BINARY_DIR}/include")
+target_include_directories(utfcaseconv INTERFACE "${CMAKE_SOURCE_DIR}/include")
 
 include(GNUInstallDirs)
 install(

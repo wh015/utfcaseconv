@@ -11,7 +11,7 @@
 #include <type_traits>
 #include <algorithm>
 
-#include "utf32_tables.h"
+#include <utfcaseconv/utf32_tables.h>
 
 namespace utfcaseconv {
 namespace utf32 {
