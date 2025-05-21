@@ -26,7 +26,7 @@ if(MSVC)
     )
 else()
     add_compile_options(
-        -Wall
+        -Wall -Werror
     )
 
     if(WITH_PROFILING)

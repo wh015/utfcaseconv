@@ -7,8 +7,9 @@
 
 // Windows doesn't have predefined macro for SSE
 // so, let's assume we just have it on x86_64
-#define UTFCASECONV_MSVC_X86_64                                                          \
-    (defined(WIN32) && defined(_M_AMD64) && !defined(_M_ARM64) && !defined(_M_ARM64EC))
+#if (defined(WIN32) && defined(_M_AMD64) && !defined(_M_ARM64) && !defined(_M_ARM64EC))
+#define UTFCASECONV_MSVC_X86_64
+#endif
 
 #define UTFCASECONV_PLATFORM_GEN (0)
 #define UTFCASECONV_PLATFORM_SSE (1 << 0)
@@ -19,7 +20,7 @@ enum Platform : uint8_t {
     SSE = UTFCASECONV_PLATFORM_SSE,
 };
 
-#if UTFCASECONV_MSVC_X86_64 || defined(__SSE4_2__)
+#if defined(UTFCASECONV_MSVC_X86_64) || defined(__SSE4_2__)
 #define UTFCASECONV_PLATFORM UTFCASECONV_PLATFORM_SSE
 static constexpr Platform PLATFORM = Platform::SSE;
 #else
