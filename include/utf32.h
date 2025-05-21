@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef _UTF32_CASECONV_H_
-#define _UTF32_CASECONV_H_
+#ifndef _UTFCASECONV_UTF32_H_
+#define _UTFCASECONV_UTF32_H_
 
 // See: https://travisdowns.github.io/blog/2019/11/19/toupper.html
 #include <ctype.h>
@@ -9,13 +9,14 @@
 #include <type_traits>
 #include <algorithm>
 
-#include "utf32caseconv_tables.h"
+#include "utf32_tables.h"
 
-namespace utf32caseconv {
+namespace utfcaseconv {
+namespace utf32 {
 
     template<size_t sz> char32_t convert(char32_t c, const std::array<char32_t, sz>& src,
         const std::array<char32_t, sz>& dst) {
-        static_assert(sz > 0, "utf32caseconv tables can not be empty");
+        static_assert(sz > 0, "caseconv tables can not be empty");
 
         auto r = c;
         const auto it = std::lower_bound(src.begin(), src.end(), c);
@@ -36,45 +37,42 @@ namespace utf32caseconv {
         return convert(c, lower_upper_src_tbl, lower_upper_dst_tbl);
     }
 
-    template<typename IT> inline void tolower_inplace(IT begin, IT end) {
-        for(auto it = begin; it != end; it = std::next(it)) {
-            *it = tolower(*it);
+    template<typename IT, typename IT2> inline void tolower(IT begin, IT end, IT2 dst) {
+        for(; begin != end; begin = std::next(begin), dst = std::next(dst)) {
+            *dst = tolower(*dst);
         }
     }
 
-    template<typename IT> inline void toupper_inplace(IT begin, IT end) {
-        for(auto it = begin; it != end; it = std::next(it)) {
-            *it = toupper(*it);
+    template<typename IT, typename IT2> inline void toupper(IT begin, IT end, IT2 dst) {
+        for(; begin != end; begin = std::next(begin), dst = std::next(dst)) {
+            *dst = toupper(*dst);
         }
     }
 
-    static inline void tolower_inplace(char32_t* in, size_t sz) {
-        tolower_inplace(in, in + sz);
+    template<typename IT> inline void tolower(IT begin, IT end) {
+        for(; begin != end; begin = std::next(begin)) {
+            *begin = tolower(*begin);
+        }
     }
 
-    static inline void toupper_inplace(char32_t* in, size_t sz) {
-        toupper_inplace(in, in + sz);
-    }
-
-    template<typename T> inline void tolower_inplace(T& in) {
-        tolower_inplace(in.begin(), in.end());
-    }
-
-    template<typename T> inline void toupper_inplace(T& in) {
-        toupper_inplace(in.begin(), in.end());
+    template<typename IT> inline void toupper(IT begin, IT end) {
+        for(; begin != end; begin = std::next(begin)) {
+            *begin = toupper(*begin);
+        }
     }
 
     template<typename T> inline T toupper(const T& in) {
         T out{in};
-        toupper_inplace(out);
+        toupper(in.begin(), in.end(), out.begin());
         return out;
     }
 
     template<typename T> inline T tolower(const T& in) {
         T out{in};
-        tolower_inplace(out);
+        tolower(in.begin(), in.end(), out.begin());
         return out;
     }
+}
 }
 
 #endif

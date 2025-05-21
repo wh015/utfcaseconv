@@ -3,9 +3,9 @@
 #include <string>
 #include <cstring>
 
-#include <utf32caseconv/utf32caseconv.h>
+#include <utfcaseconv/utf32.h>
 
-using namespace utf32caseconv;
+using namespace utfcaseconv::utf32;
 
 TEST_CASE("Latin") {
     REQUIRE(tolower(U'A') == U'a');
@@ -118,6 +118,6 @@ TEST_CASE("Strings") {
 TEST_CASE("Arrays") {
     char32_t src[] = U"НеКаЯ СтРоКа";
     char32_t expected[] = U"некая строка";
-    tolower_inplace(src, sizeof(src) / sizeof(*src));
+    tolower(src, src + (sizeof(src) / sizeof(*src)));
     REQUIRE(memcmp(src, expected, sizeof(src)) == 0);
 }

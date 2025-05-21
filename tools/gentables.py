@@ -46,18 +46,18 @@ def header_begin(guard):
 
 #include <array>
 
-namespace utf32caseconv {{
+namespace utfcaseconv {{\nnamespace utf32 {{
 
 """.format(guard)
 
 def header_end():
-    return """}
+    return """}\n}
 #endif
 
 """
 
 def output_write(path_out, items):
-    guard = "_UTF32CASECONV_TABLES_H_"
+    guard = "_UTFCASECONV_UTF32_TABLES_H_"
     upper = lambda item: item.upper
     lower = lambda item: item.lower
 

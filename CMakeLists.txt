@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.7)
 
-project(utf32caseconv LANGUAGES CXX VERSION 0.0.1)
-
-option(WITH_TESTS "Build common tests." ON)
+project(utfcaseconv LANGUAGES CXX)
 
 include_directories(BEFORE SYSTEM ${CMAKE_INCLUDE_PATH})
+
+option(WITH_TESTS "Build common tests." ON)
 
 if(MSVC)
     add_compile_options(
@@ -13,27 +13,27 @@ if(MSVC)
 endif()
 
 set (TARGET_HEADERS
-    "${CMAKE_BINARY_DIR}/include/utf32caseconv/utf32caseconv.h"
-    "${CMAKE_BINARY_DIR}/include/utf32caseconv/utf32caseconv_tables.h"
+    "${CMAKE_BINARY_DIR}/include/utfcaseconv/utf32.h"
+    "${CMAKE_BINARY_DIR}/include/utfcaseconv/utf32_tables.h"
 )
 
 add_custom_command(OUTPUT ${TARGET_HEADERS}
-    COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_SOURCE_DIR}/include/utf32caseconv.h" "${CMAKE_BINARY_DIR}/include/utf32caseconv/utf32caseconv.h"
-    COMMAND "python3" "${CMAKE_SOURCE_DIR}/tools/gentables.py" -i "${CMAKE_SOURCE_DIR}/assets/CaseFolding.txt" -o "${CMAKE_BINARY_DIR}/include/utf32caseconv/utf32caseconv_tables.h"
-    DEPENDS "${CMAKE_SOURCE_DIR}/assets/CaseFolding.txt" "${CMAKE_SOURCE_DIR}/tools/gentables.py" "${CMAKE_SOURCE_DIR}/include/utf32caseconv.h"
+    COMMAND "${CMAKE_COMMAND}" -E copy "${CMAKE_SOURCE_DIR}/include/utf32.h" "${CMAKE_BINARY_DIR}/include/utfcaseconv/utf32.h"
+    COMMAND "python3" "${CMAKE_SOURCE_DIR}/tools/gentables.py" -i "${CMAKE_SOURCE_DIR}/assets/CaseFolding.txt" -o "${CMAKE_BINARY_DIR}/include/utfcaseconv/utf32_tables.h"
+    DEPENDS "${CMAKE_SOURCE_DIR}/assets/CaseFolding.txt" "${CMAKE_SOURCE_DIR}/tools/gentables.py" "${CMAKE_SOURCE_DIR}/include/utf32.h"
     COMMENT "Making headers"
     VERBATIM
 )
 
 add_custom_target(generate_tables ALL DEPENDS ${TARGET_HEADERS})
 
-add_library(utf32caseconv INTERFACE)
-target_include_directories(utf32caseconv INTERFACE "${CMAKE_BINARY_DIR}/include")
+add_library(utfcaseconv INTERFACE)
+target_include_directories(utfcaseconv INTERFACE "${CMAKE_BINARY_DIR}/include")
 
 include(GNUInstallDirs)
 install(
     FILES ${TARGET_HEADERS}
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/utf32caseconv")
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/utfcaseconv")
 
 if(WITH_TESTS)
     enable_testing()
