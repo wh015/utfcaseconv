@@ -17,6 +17,7 @@ include_directories(BEFORE SYSTEM ${CMAKE_INCLUDE_PATH})
 
 option(WITH_TESTS "Build common tests." ON)
 option(WITH_BENCHMARKS "Build benchmarks." OFF)
+option(WITH_BENCHMARKS_ICU "Build benchmarks for ICU to compare." OFF)
 
 if(MSVC)
     add_compile_options(

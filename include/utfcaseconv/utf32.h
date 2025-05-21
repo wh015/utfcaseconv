@@ -90,7 +90,7 @@ inline size_t toupper(IT begin, IT end) noexcept {
 
 template <typename T>
 inline T toupper(const T& in) {
-    T out{};
+    T out;
     out.reserve(in.size());
     toupper(in.begin(), in.end(), std::back_inserter(out));
     return out;
@@ -98,11 +98,26 @@ inline T toupper(const T& in) {
 
 template <typename T>
 inline T tolower(const T& in) {
-    T out{};
+    T out;
     out.reserve(in.size());
     tolower(in.begin(), in.end(), std::back_inserter(out));
     return out;
 }
+
+inline std::u32string toupper(std::u32string_view in) {
+    std::u32string out;
+    out.reserve(in.size());
+    toupper(in.begin(), in.end(), std::back_inserter(out));
+    return out;
+}
+
+inline std::u32string tolower(std::u32string_view in) {
+    std::u32string out;
+    out.reserve(in.size());
+    tolower(in.begin(), in.end(), std::back_inserter(out));
+    return out;
+}
+
 } // namespace utf32
 } // namespace utfcaseconv
 
