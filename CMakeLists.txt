@@ -17,12 +17,20 @@ include_directories(BEFORE SYSTEM ${CMAKE_INCLUDE_PATH})
 
 option(WITH_TESTS "Build common tests." ON)
 option(WITH_BENCHMARKS "Build benchmarks." OFF)
+option(WITH_PROFILING "Enable compile options for perf profiling (Linux only)." OFF)
 option(WITH_BENCHMARKS_ICU "Build benchmarks for ICU to compare." OFF)
 
 if(MSVC)
     add_compile_options(
         /utf-8 # to support multibyte char literals in tests
     )
+else()
+    if(WITH_PROFILING)
+        add_compile_options(
+            -fno-omit-frame-pointer # to collect stacktrace
+            -g # to see the source code when annotating
+        )
+    endif()
 endif()
 
 set(BINARY_HEADERS_DIR "${CMAKE_BINARY_DIR}/include/utfcaseconv")
@@ -55,10 +63,12 @@ install(
 
 if(WITH_TESTS OR WITH_BENCHMARKS)
     enable_testing()
-if(WITH_TESTS)
-    add_subdirectory("${CMAKE_SOURCE_DIR}/tests")
-endif()
-if(WITH_BENCHMARKS)
-    add_subdirectory("${CMAKE_SOURCE_DIR}/benchmarks")
-endif()
+
+    if(WITH_TESTS)
+        add_subdirectory("${CMAKE_SOURCE_DIR}/tests")
+    endif()
+
+    if(WITH_BENCHMARKS)
+        add_subdirectory("${CMAKE_SOURCE_DIR}/benchmarks")
+    endif()
 endif()
