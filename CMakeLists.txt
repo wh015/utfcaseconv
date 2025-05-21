@@ -11,6 +11,7 @@ endif()
 include_directories(BEFORE SYSTEM ${CMAKE_INCLUDE_PATH})
 
 option(WITH_TESTS "Build common tests." ON)
+option(WITH_BENCHMARKS "Build benchmarks." OFF)
 
 if(MSVC)
     add_compile_options(
@@ -47,7 +48,12 @@ install(
     FILES ${TARGET_HEADERS}
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/utfcaseconv")
 
-if(WITH_TESTS)
+if(WITH_TESTS OR WITH_BENCHMARKS)
     enable_testing()
+if(WITH_TESTS)
     add_subdirectory(tests)
+endif()
+if(WITH_BENCHMARKS)
+    add_subdirectory(benchmarks)
+endif()
 endif()
