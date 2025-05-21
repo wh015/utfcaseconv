@@ -110,12 +110,17 @@ TEST(utf32_toupper_codepoint, non_bicameral) {
     ASSERT_EQ(toupper(U'ฌ'), U'ฌ');
 }
 
-TEST(utf32_toupper_sequence, string) {
+TEST(utf32_toupper_string32, string) {
     std::u32string src = U"НеКаЯ СтРоКа";
     ASSERT_EQ(toupper(src), U"НЕКАЯ СТРОКА");
 }
 
-TEST(utf32_toupper_sequence, array) {
+TEST(utf32_toupper_string32, mixed_long) {
+    std::u32string src = U"AnyStringКакая-тоСтрока1234567890Какая-тоСтрокаAnyString";
+    ASSERT_EQ(toupper(src), U"ANYSTRINGКАКАЯ-ТОСТРОКА1234567890КАКАЯ-ТОСТРОКАANYSTRING");
+}
+
+TEST(utf32_toupper_array, array) {
     char32_t src[] = U"НеКаЯ СтРоКа";
     char32_t expected[] = U"НЕКАЯ СТРОКА";
 

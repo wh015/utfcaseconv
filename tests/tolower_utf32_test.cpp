@@ -110,12 +110,17 @@ TEST(utf32_tolower_codepoint, non_bicameral) {
     ASSERT_EQ(tolower(U'ฌ'), U'ฌ');
 }
 
-TEST(utf32_tolower_sequence, string) {
+TEST(utf32_tolower_string32, string) {
     std::u32string src = U"НеКаЯ СтРоКа";
     ASSERT_EQ(tolower(src), U"некая строка");
 }
 
-TEST(utf32_tolower_sequence, array) {
+TEST(utf32_tolower_string32, mixed_long) {
+    std::u32string src = U"AnyStringКакая-тоСтрока1234567890Какая-тоСтрокаAnyString";
+    ASSERT_EQ(tolower(src), U"anystringкакая-тострока1234567890какая-тострокаanystring");
+}
+
+TEST(utf32_tolower_array, array) {
     char32_t src[] = U"НеКаЯ СтРоКа";
     char32_t expected[] = U"некая строка";
 

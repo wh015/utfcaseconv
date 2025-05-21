@@ -77,17 +77,22 @@ TEST(utf8_tolower_string, georgian) {
     ASSERT_EQ(tolower(s), "ⴀⴥⴙაჰრ");
 }
 
+TEST(utf8_lower_string, mixed_long) {
+    std::string s = "AnyStringКакая-тоСтрока1234567890Какая-тоСтрокаAnyString";
+    ASSERT_EQ(tolower(s), "anystringкакая-тострока1234567890какая-тострокаanystring");
+}
+
 TEST(utf8_tolower_string, non_bicameral) {
     std::string s = "غ𐠔❤デ東大ᚦఅஊஊ";
     ASSERT_EQ(tolower(s), "غ𐠔❤デ東大ᚦఅஊஊ");
 }
 
-TEST(utf8_tolower_string, string_view) {
+TEST(utf8_tolower_string_view, string_view) {
     std::string_view s = "НеКаЯ СтРоКа";
     ASSERT_EQ(tolower(s), "некая строка");
 }
 
-TEST(utf8_tolower_string, vector) {
+TEST(utf8_tolower_string_view, vector) {
     std::string_view s = "НеКаЯ СтРоКа";
     char expected[] = "некая строка";
 
@@ -95,7 +100,7 @@ TEST(utf8_tolower_string, vector) {
     ASSERT_EQ(memcmp(v.data(), expected, v.size()), 0);
 }
 
-TEST(utf8_tolower_string, array) {
+TEST(utf8_tolower_array, array) {
     char src[] = "НеКаЯ СтРоКа";
     char expected[] = "некая строка";
 

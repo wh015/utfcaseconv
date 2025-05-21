@@ -77,17 +77,22 @@ TEST(utf8_toupper_string, georgian) {
     ASSERT_EQ(toupper(s), "ႠჅႱᲐᲰᲓ");
 }
 
+TEST(utf8_toupper_string, mixed_long) {
+    std::string s = "AnyStringКакая-тоСтрока1234567890Какая-тоСтрокаAnyString";
+    ASSERT_EQ(toupper(s), "ANYSTRINGКАКАЯ-ТОСТРОКА1234567890КАКАЯ-ТОСТРОКАANYSTRING");
+}
+
 TEST(utf8_toupper_string, non_bicameral) {
     std::string s = "غ𐠔❤デ東大ᚦఅஊஊ";
     ASSERT_EQ(toupper(s), "غ𐠔❤デ東大ᚦఅஊஊ");
 }
 
-TEST(utf8_toupper_string, string_view) {
+TEST(utf8_toupper_string_view, string_view) {
     std::string_view s = "НеКаЯ СтРоКа";
     ASSERT_EQ(toupper(s), "НЕКАЯ СТРОКА");
 }
 
-TEST(utf8_toupper_string, vector) {
+TEST(utf8_toupper_string_view, vector) {
     std::string_view s = "НеКаЯ СтРоКа";
     char expected[] = "НЕКАЯ СТРОКА";
 
@@ -95,7 +100,7 @@ TEST(utf8_toupper_string, vector) {
     ASSERT_EQ(memcmp(v.data(), expected, v.size()), 0);
 }
 
-TEST(utf8_toupper_string, array) {
+TEST(utf8_toupper_array, array) {
     char src[] = "НеКаЯ СтРоКа";
     char expected[] = "НЕКАЯ СТРОКА";
 
