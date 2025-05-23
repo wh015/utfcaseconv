@@ -14,7 +14,7 @@ During `UTF-8` string casefolding the input string is additionaly separated into
 ## Updaing tables
 Current version is taken from [there](https://www.unicode.org/Public/16.0.0/ucd/CaseFolding.txt). There are only few case-sensitive alphabets, but if new one is added into the standard, then:
 
-1. Go to [официальный сайт Unicode](https://www.unicode.org/Public).
+1. Go to [official Unicode resourse](https://www.unicode.org/Public).
 2. Choose the necessary version. Current: [16.0.0](https://www.unicode.org/Public/16.0.0).
 3. The necessary file is placed insude `ucd` directory and called `CaseFolding.txt`. Download the fike and replace `assets/CaseFolding.txt` in repository.
 4. Commit. The headers are generated dueing each build.
