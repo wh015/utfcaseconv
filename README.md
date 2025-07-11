@@ -21,5 +21,6 @@ Current version is taken from [there](https://www.unicode.org/Public/16.0.0/ucd/
 5. Do not forget to update README and change a version to the new one.
 
 ## TODO
-1. Upport intrinsics.
+1. Better CPU detection support including runtime.
+2. Support AVX / AVX2 / AVX512.
 
